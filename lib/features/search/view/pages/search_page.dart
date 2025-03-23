@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/features/search/view/widgets/search_results.dart';
+import 'package:flutter_application/features/search/viewmodel/movie_search_notifier.dart';
+import 'package:flutter_application/features/search/view/widgets/Theater/theater_results.dart';
 import 'package:flutter_application/features/search/viewmodel/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../widgets/Movie/movie_results.dart';
 
 class SearchPage extends ConsumerStatefulWidget {
   const SearchPage({super.key});
@@ -26,20 +29,25 @@ class _SearchPage extends ConsumerState<SearchPage> {
       child: Column(
         children: [
           SearchBar(
-            onChanged: (value) {
-              ref.read(queryProvider.notifier).state = value;
+            onSubmitted: (value) {
+              ref.read(queryProvider.notifier).update((prev) => value);
+              ref.read(movieSearchProvider.notifier).searchQuery(value);
             },
             controller: myController,
             hintText: "Search for a movie or a theater",
             hintStyle: WidgetStateProperty.all<TextStyle>(const TextStyle(color: Colors.black45)),
             trailing: <Widget>[
               IconButton(
-                onPressed: () => {ref.read(queryProvider.notifier).state = myController.value.text},
+                onPressed: () {
+                  ref.read(queryProvider.notifier).update((prev) => myController.text);
+                  ref.read(movieSearchProvider.notifier).searchQuery(myController.text);
+                },
                 icon: const Icon(Icons.search),
               ),
             ],
           ),
-          SearchResults(),
+          SizedBox(height: 12),
+          Expanded(child: SingleChildScrollView(child: MovieResults())),
         ],
       ),
     );
