@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/features/home/view/widgets/now_airing.dart';
 import 'package:flutter_application/features/search/view/pages/search_page.dart';
 import 'package:flutter_application/features/settings/view/pages/settings_page.dart';
+import 'package:flutter_application/features/tickets/pages/tickets.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -20,7 +21,7 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Color.fromARGB(255, 246, 205, 241),
         title: Center(child: Text(widget.title, style: TextStyle(fontWeight: FontWeight.bold))),
       ),
-      body: [NowAiring(), SearchPage(), SettingsPage()][currentSelectedIndex],
+      body: [NowAiring(), SearchPage(), MyTickets(), SettingsPage()][currentSelectedIndex],
       bottomNavigationBar: NavigationBar(
         selectedIndex: currentSelectedIndex,
         onDestinationSelected: (index) {
@@ -32,6 +33,7 @@ class _MyHomePageState extends State<MyHomePage> {
         destinations: [
           NavigationDestination(icon: Icon(Icons.home), label: "Home"),
           NavigationDestination(icon: Icon(Icons.search), label: "Search"),
+          NavigationDestination(icon: Icon(Icons.local_movies), label: "Tickets"),
           NavigationDestination(icon: Icon(Icons.settings), label: "Settings"),
         ],
       ),
