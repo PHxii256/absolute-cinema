@@ -41,22 +41,11 @@ class MoviePoster extends StatelessWidget {
           );
         },
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: Image.asset(imageUrl, width: 120 * 2, height: 180 * 2, fit: BoxFit.cover),
-            ),
-            const SizedBox(height: 8),
-            SizedBox(
-              width: 120,
-              child: Text(
-                movieName,
-                textAlign: TextAlign.center,
-                style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w500),
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
-              ),
             ),
           ],
         ),

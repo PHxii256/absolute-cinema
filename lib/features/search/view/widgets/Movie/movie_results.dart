@@ -32,7 +32,7 @@ class MovieResults extends ConsumerWidget {
                   TheaterResults(),
                 ],
               )
-              : Container(),
+              : Text("nothing found :/"),
         AsyncError() => const Text('Oops, something unexpected happened'),
         _ => Center(child: SizedBox(width: 40, height: 40, child: const CircularProgressIndicator())),
       },

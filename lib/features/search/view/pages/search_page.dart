@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/features/search/viewmodel/movie_search_notifier.dart';
-import 'package:flutter_application/features/search/view/widgets/Theater/theater_results.dart';
 import 'package:flutter_application/features/search/viewmodel/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
