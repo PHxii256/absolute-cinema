@@ -6,7 +6,7 @@ part of 'theater_search_notifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$theaterSearchHash() => r'3ffb222234f8ef4993d552fa5feb4ab7c458970c';
+String _$theaterSearchHash() => r'069af7c8b722d436fa0eb0eb0476c92d82f15916';
 
 /// See also [TheaterSearch].
 @ProviderFor(TheaterSearch)

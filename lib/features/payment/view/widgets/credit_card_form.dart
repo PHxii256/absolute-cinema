@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/features/payment/view/pages/confirmation_page.dart';
+import 'package:flutter_application/features/reservation/viewmodel/countdown_notifier.dart';
+import 'package:flutter_application/features/reservation/viewmodel/seat_status_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:string_validator/string_validator.dart';
@@ -7,7 +9,8 @@ import 'package:string_validator/string_validator.dart';
 final _globalFormKey = GlobalKey<FormState>();
 
 class CreditCardForm extends ConsumerStatefulWidget {
-  const CreditCardForm({super.key});
+  final int screeningId;
+  const CreditCardForm({super.key, required this.screeningId});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _CreditCardFormState();
@@ -70,7 +73,7 @@ class _CreditCardFormState extends ConsumerState<CreditCardForm> {
                   if (v == null || v.isEmpty) {
                     return 'You must enter a value for the name.';
                   }
-                  if (!v.isAlpha) {
+                  if (!v.isAscii && !v.isNumeric) {
                     return 'Please enter valid charchters only.';
                   }
 
@@ -141,8 +144,19 @@ class _CreditCardFormState extends ConsumerState<CreditCardForm> {
                           await prefs.setString('cardExpirationDate', cardExpirationDate.text);
                           await prefs.setString('cardCvv', cardCvv.text);
                         }
+
+                        ref.read(countdownProvider.notifier).cancelTimer();
+                        final String? bookedErr = await ref
+                            .read(seatStatusProvider(widget.screeningId).notifier)
+                            .tryBookSeats(widget.screeningId);
                         if (context.mounted) {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => const PaymentConfirmation()));
+                          if (bookedErr == null) {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentConfirmation()));
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(behavior: SnackBarBehavior.floating, content: Text("Error: $bookedErr")),
+                            );
+                          }
                         }
                       }
                     },

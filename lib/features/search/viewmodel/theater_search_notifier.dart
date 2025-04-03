@@ -32,20 +32,9 @@ class TheaterSearch extends _$TheaterSearch {
       'get_theaters_airing_movie',
       params: {'p_movie_id': movieId},
     );
-
     for (var result in dbResultList) {
       MovieAiringInfo airingInfo = MovieAiringInfo.fromJson(result);
-
-      //This merges airing infos based on theater id
-      if (airingResults.any((result) => result.theaterId == airingInfo.theaterId)) {
-        for (int i = 0; i < airingResults.length; i++) {
-          if (airingResults[i].theaterId == airingInfo.theaterId) {
-            airingResults[i].airingTimestamps.addAll(airingInfo.airingTimestamps);
-          }
-        }
-      } else {
-        airingResults.add(airingInfo);
-      }
+      airingResults.add(airingInfo);
     }
     return airingResults;
   }

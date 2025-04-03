@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/features/home/view/widgets/now_airing.dart';
 import 'package:flutter_application/features/search/view/pages/search_page.dart';
 import 'package:flutter_application/features/settings/view/pages/settings_page.dart';
-import 'package:flutter_application/features/tickets/pages/tickets.dart';
+import 'package:flutter_application/features/tickets/view/pages/tickets.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});

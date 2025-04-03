@@ -1,19 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/features/reservation/model/isle_layout_data.dart';
+import 'package:flutter_application/features/reservation/model/seat_status_data.dart';
 import 'package:flutter_application/features/reservation/model/theater_model.dart';
-import 'package:flutter_application/features/reservation/viewmodel/providers.dart';
+import 'package:flutter_application/features/reservation/viewmodel/countdown_notifier.dart';
+import 'package:flutter_application/features/reservation/viewmodel/seat_layout_notifier.dart';
+import 'package:flutter_application/features/reservation/viewmodel/seat_status_notifier.dart';
+import 'package:flutter_application/features/search/model/movie_airing_info.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+// ignore: depend_on_referenced_packages
+import 'package:collection/collection.dart';
 
 const double seatSize = 34;
 const double seatGap = 8;
 const double isleGap = 14;
 
-class TheaterSeatsViewer extends ConsumerWidget {
-  final TheaterSeatingData theaterSeatingData;
-  const TheaterSeatsViewer({super.key, required, required this.theaterSeatingData});
+class TheaterSeatsViewer extends ConsumerStatefulWidget {
+  //TO DO: convert to stateless?
+  final MovieAiringInfo airingInfo;
+
+  const TheaterSeatsViewer({super.key, required this.airingInfo});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    const double initialScrollOffset = 59; //magic number to center the view (requires change if no seats change)
+  ConsumerState<ConsumerStatefulWidget> createState() => _TheaterSeatsViewerState();
+}
+
+class _TheaterSeatsViewerState extends ConsumerState<TheaterSeatsViewer> {
+  @override
+  Widget build(BuildContext context) {
+    final isleLayoutList = ref.watch(seatLayoutProvider(widget.airingInfo));
     return Column(
       children: [
         SizedBox(height: 20),
@@ -27,37 +41,58 @@ class TheaterSeatsViewer extends ConsumerWidget {
             ),
           ),
         ),
+
         SizedBox(
           height: 440,
-          child: SingleChildScrollView(
-            controller: ScrollController(initialScrollOffset: initialScrollOffset),
-            scrollDirection: Axis.horizontal,
-            child: SizedBox(
-              height: 600,
-              child: Row(
-                spacing: isleGap,
-                children: [
-                  for (int i = 0; i < theaterSeatingData.seatingData.length; i++)
-                    Isle(
-                      isleData: theaterSeatingData.seatingData[i],
-                      seatPrice: theaterSeatingData.seatPrice,
-                      vipSeatPrice: theaterSeatingData.vipSeatPrice ?? theaterSeatingData.seatPrice,
-                    ),
-                ],
-              ),
-            ),
-          ),
+          child: switch (isleLayoutList) {
+            AsyncData(:final value) =>
+              value.isNotEmpty
+                  ? SeatsViewer(isleData: value, airingInfo: widget.airingInfo)
+                  : Center(child: Text("No seating data found")),
+            AsyncError() => const Text('Oops, something unexpected happened'),
+            _ => Center(child: SizedBox(width: 40, height: 40, child: const CircularProgressIndicator())),
+          },
         ),
       ],
     );
   }
 }
 
-class Isle extends StatelessWidget {
-  final IsleData isleData;
-  final int seatPrice;
-  final int vipSeatPrice;
-  const Isle({super.key, required this.isleData, required this.seatPrice, required this.vipSeatPrice});
+class SeatsViewer extends StatelessWidget {
+  final List<IsleLayoutData> isleData;
+  final MovieAiringInfo airingInfo;
+  const SeatsViewer({super.key, required this.isleData, required this.airingInfo});
+
+  int colCount() {
+    int colCount = 0;
+    for (var isle in isleData) {
+      colCount += isle.rowSeatCount;
+    }
+    return colCount;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    const double offsetPerSeat = 5.5; //magic number to center the view (found through testing)
+
+    return SingleChildScrollView(
+      controller: ScrollController(initialScrollOffset: offsetPerSeat * colCount()),
+      scrollDirection: Axis.horizontal,
+      child: SizedBox(
+        height: 600,
+        child: Row(
+          spacing: isleGap,
+          children: [for (int i = 0; i < isleData.length; i++) Isle(isleData: isleData[i], airingInfo: airingInfo)],
+        ),
+      ),
+    );
+  }
+}
+
+class Isle extends ConsumerWidget {
+  final IsleLayoutData isleData;
+  final MovieAiringInfo airingInfo;
+  const Isle({super.key, required this.isleData, required this.airingInfo});
 
   bool isGapRow(int i) {
     if (isleData.gapRowIndexes == null) {
@@ -73,9 +108,9 @@ class Isle extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
-      width: isleData.seatCount * (seatSize + seatGap) + seatGap,
+      width: isleData.rowSeatCount * (seatSize + seatGap) + seatGap,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -86,14 +121,18 @@ class Isle extends StatelessWidget {
               padding: EdgeInsets.all(8.0),
               scrollDirection: Axis.vertical,
               children: [
-                for (int i = 0; i < isleData.rowsCount; i++)
+                for (int i = 0; i < isleData.rowCount; i++)
                   !isGapRow(i)
                       ? TheaterRow(
-                        seatCount: isleData.seatCount,
-                        startingSeatIndex: i * isleData.seatCount.toInt(),
-                        isleID: isleData.isleID,
+                        seatCount: isleData.rowSeatCount.toDouble(),
+                        startingSeatIndex: i * isleData.rowSeatCount.toInt(),
+                        isleID: isleData.isleCode,
                         isVip: isVipRow(i),
-                        price: isVipRow(i) ? vipSeatPrice : seatPrice,
+                        price:
+                            isVipRow(i)
+                                ? airingInfo.ticketPrice + (airingInfo.vipSeatUpCharge ?? 0)
+                                : airingInfo.ticketPrice,
+                        airingInfo: airingInfo,
                       )
                       : Padding(padding: const EdgeInsets.symmetric(vertical: 8.0)),
               ],
@@ -106,12 +145,12 @@ class Isle extends StatelessWidget {
 }
 
 class TheaterRow extends StatelessWidget {
-  //TO:DO : Add this to models
   final bool isVip;
   final int price;
   final double seatCount;
   final int startingSeatIndex;
   final String isleID;
+  final MovieAiringInfo airingInfo;
   const TheaterRow({
     super.key,
     required this.seatCount,
@@ -119,6 +158,7 @@ class TheaterRow extends StatelessWidget {
     required this.isleID,
     required this.isVip,
     required this.price,
+    required this.airingInfo,
   });
 
   @override
@@ -145,6 +185,7 @@ class TheaterRow extends StatelessWidget {
           children: [
             for (int i = 0; i < seatCount; i++)
               SeatWidget(
+                airingInfo: airingInfo,
                 seatData: SeatData(seatNo: startingSeatIndex + i + 1, isleID: isleID, isVip: isVip, price: price),
               ),
           ],
@@ -155,39 +196,48 @@ class TheaterRow extends StatelessWidget {
 }
 
 class SeatWidget extends ConsumerStatefulWidget {
-  const SeatWidget({super.key, required this.seatData});
+  const SeatWidget({super.key, required this.seatData, required this.airingInfo});
   final SeatData seatData;
+  final MovieAiringInfo airingInfo;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _SeatState();
 }
 
 class _SeatState extends ConsumerState<SeatWidget> {
-  bool reserved = false;
-
   @override
   Widget build(BuildContext context) {
+    final reservedSeat = ref.watch(seatStatusProvider(widget.airingInfo.screeningId));
+
+    BoxDecoration getBoxDecoration() {
+      Color color = Colors.red;
+      if (reservedSeat.hasValue) {
+        reservedSeat.value!.firstWhereOrNull((SeatStatusData data) {
+          if (data.seatNumber == widget.seatData.seatNo && data.isleCode == widget.seatData.isleID) {
+            if (data.booked) {
+              color = Color.fromARGB(255, 45, 0, 0);
+            } else {
+              color = Color.fromARGB(255, 101, 12, 12);
+            }
+            return true;
+          }
+          return false;
+        });
+      }
+      return BoxDecoration(borderRadius: BorderRadius.circular(4), color: color);
+    }
+
     return SizedBox.square(
       dimension: seatSize,
       child: InkWell(
         onTap: () {
-          ref.read(reservedSeatsProvider.notifier).update((prev) {
-            if (reserved == false) {
-              return [...prev, widget.seatData];
-            } else {
-              prev.remove(widget.seatData);
-              return prev = [...prev];
-            }
-          });
-          setState(() {
-            reserved = !reserved;
-          });
+          ref
+              .read(seatStatusProvider(widget.airingInfo.screeningId).notifier)
+              .toggleReserveSeat(widget.airingInfo.screeningId, widget.seatData);
+          ref.read(countdownProvider.notifier).startTimer();
         },
         child: DecoratedBox(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(4),
-            color: reserved ? const Color.fromARGB(255, 101, 12, 12) : Colors.red,
-          ),
+          decoration: getBoxDecoration(),
           child: Center(
             child: Text(
               "${widget.seatData.seatNo}${widget.seatData.isleID}",

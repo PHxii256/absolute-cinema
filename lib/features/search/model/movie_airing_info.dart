@@ -9,21 +9,28 @@ part 'movie_airing_info.g.dart';
 @Freezed(makeCollectionsUnmodifiable: false)
 abstract class MovieAiringInfo with _$MovieAiringInfo {
   const MovieAiringInfo._();
-
   const factory MovieAiringInfo({
-    @JsonKey(name: 'name') required String theaterName,
-    @JsonKey(name: 'theater_id') required int theaterId,
+    @JsonKey(name: 'movie_id') required int movieId,
+
+    @JsonKey(name: 'screening_id') required int screeningId,
+    @JsonKey(name: 'screening_timestamp') required DateTime screeningTimestamp,
+    @JsonKey(name: 'screening_ticket_price') required int ticketPrice,
+
+    @JsonKey(name: 'theater_governorate_name') required String governorateName,
+    @JsonKey(name: 'theater_area_name') required String areaName,
+    @JsonKey(name: 'theater_street_name') required String streetName,
+
     @JsonKey(name: 'hall_id') required int hallId,
-    @JsonKey(name: 'airing_timestamps') required List<DateTime> airingTimestamps,
-    @JsonKey(name: 'gmaps_link') required String gMapsLink,
-    @JsonKey(name: 'governorate_name') required String governorateName,
-    @JsonKey(name: 'area_name') required String areaName,
-    @JsonKey(name: 'street_name') required String streetName,
-    @JsonKey(name: 'allows_snacks') required bool allowsSnacks,
-    @JsonKey(name: 'offers_snacks') required bool offersSnacks,
-    @JsonKey(name: 'ticket_price') required int ticketPrice,
-    @JsonKey(name: 'vip_seat_upcharge') int? vipSeatUpCharge,
-    @JsonKey(name: 'rating') int? theaterRating,
+    @JsonKey(name: 'hall_name') required String hallName,
+    @JsonKey(name: 'hall_screen') required String hallScreen,
+
+    @JsonKey(name: 'theater_name') required String theaterName,
+    @JsonKey(name: 'theater_id') required int theaterId,
+    @JsonKey(name: 'theater_gmaps_link') required String gMapsLink,
+    @JsonKey(name: 'theater_allows_snacks') required bool allowsSnacks,
+    @JsonKey(name: 'theater_offers_snacks') required bool offersSnacks,
+    @JsonKey(name: 'theater_vip_seat_upcharge') int? vipSeatUpCharge,
+    @JsonKey(name: 'theater_rating') int? theaterRating,
   }) = _MovieAiringInfo;
 
   TheaterData getTheaterData() {
