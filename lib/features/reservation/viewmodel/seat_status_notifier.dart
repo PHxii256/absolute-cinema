@@ -83,16 +83,15 @@ class SeatStatus extends _$SeatStatus {
     try {
       final currentBalance = await tryGetBalance();
       if (currentBalance != null) {
-        await _bookIfBalanceEnough(currentBalance);
+        return await _bookIfBalanceEnough(currentBalance);
       } else {
         await _createBalanceRecord();
         final currentBalance = await tryGetBalance();
-        await _bookIfBalanceEnough(currentBalance);
+        return await _bookIfBalanceEnough(currentBalance);
       }
     } catch (e) {
       return e.toString();
     }
-    return null;
   }
 
   Future<String?> _bookIfBalanceEnough(int? currentBalance) async {
@@ -206,7 +205,7 @@ class SeatStatus extends _$SeatStatus {
       );
       await Supabase.instance.client.from('reserved_seat').insert(seatStatus);
     } catch (e) {
-      print(e);
+      //print(e);
     }
   }
 

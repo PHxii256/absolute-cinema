@@ -98,6 +98,7 @@ class SettingsPage extends ConsumerWidget {
                 if (err == null && balance != null) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
+                      duration: Duration(milliseconds: 400),
                       behavior: SnackBarBehavior.floating,
                       content: Text("Success! Current Balance is ${balance.toString()}EGP"),
                     ),
@@ -122,6 +123,7 @@ class SettingsPage extends ConsumerWidget {
                 if (err == null && balance != null) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
+                      duration: Duration(milliseconds: 400),
                       behavior: SnackBarBehavior.floating,
                       content: Text("Success! Current Balance is ${balance.toString()}EGP"),
                     ),
@@ -145,7 +147,7 @@ class SettingsPage extends ConsumerWidget {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     behavior: SnackBarBehavior.floating,
-                    duration: Duration(milliseconds: 1000),
+                    duration: Duration(milliseconds: 400),
                     content:
                         balance != null
                             ? Text("Success! Current Balance is ${balance.toString()}EGP")

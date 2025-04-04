@@ -6,8 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:string_validator/string_validator.dart';
 
-final _globalFormKey = GlobalKey<FormState>();
-
 class CreditCardForm extends ConsumerStatefulWidget {
   final int screeningId;
   const CreditCardForm({super.key, required this.screeningId});
@@ -17,6 +15,7 @@ class CreditCardForm extends ConsumerStatefulWidget {
 }
 
 class _CreditCardFormState extends ConsumerState<CreditCardForm> {
+  final _globalFormKey = GlobalKey<FormState>();
   bool saveCardInfo = true;
   final cardNumber = TextEditingController();
   final cardHolderName = TextEditingController();
@@ -153,6 +152,9 @@ class _CreditCardFormState extends ConsumerState<CreditCardForm> {
                           if (bookedErr == null) {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentConfirmation()));
                           } else {
+                            ref
+                                .read(seatStatusProvider(widget.screeningId).notifier)
+                                .deleteAllReservedSeats(widget.screeningId);
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(behavior: SnackBarBehavior.floating, content: Text("Error: $bookedErr")),
                             );

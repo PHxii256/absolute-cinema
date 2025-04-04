@@ -43,30 +43,33 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(32),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("Welcome back!", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26)),
-            Text(
-              "Please Login To Continue",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.grey),
-            ),
-            SizedBox(height: 8),
-            TextField(controller: emailController, decoration: InputDecoration(label: Text("Email"))),
-            TextField(
-              controller: passwordController,
-              decoration: InputDecoration(label: Text("Password")),
-              obscureText: true,
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(onPressed: login, child: Text("Login")),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SignUpPage()));
-              },
-              child: Text("Don't Have An Account? Sign Up"),
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.only(top: 12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Welcome back!", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26)),
+              Text(
+                "Please Login To Continue",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.grey),
+              ),
+              SizedBox(height: 8),
+              TextField(controller: emailController, decoration: InputDecoration(label: Text("Email"))),
+              TextField(
+                controller: passwordController,
+                decoration: InputDecoration(label: Text("Password")),
+                obscureText: true,
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(onPressed: login, child: Text("Login")),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SignUpPage()));
+                },
+                child: Text("Don't Have An Account? Sign Up"),
+              ),
+            ],
+          ),
         ),
       ),
     );

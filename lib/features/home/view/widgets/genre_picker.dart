@@ -8,44 +8,42 @@ class GenrePicker extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Expanded(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Categories',
-                    style: TextStyle(
-                      color: const Color.fromARGB(169, 0, 0, 0),
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Categories',
+                  style: TextStyle(
+                    color: const Color.fromARGB(169, 0, 0, 0),
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
                   ),
-                  TextButton(
-                    onPressed: () {},
-                    child: Text('See All', style: TextStyle(color: Colors.black38, fontSize: 16)),
-                  ),
-                ],
-              ),
+                ),
+                TextButton(
+                  onPressed: () {},
+                  child: Text('See All', style: TextStyle(color: Colors.black38, fontSize: 16)),
+                ),
+              ],
             ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  ChoicePicker(
-                    choices: ["Action", "Drama", "Comedy", "Romance", "Adventure", "Horror"],
-                    onChange: (value) {},
-                  ),
-                ],
-              ),
+          ),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                ChoicePicker(
+                  choices: ["Action", "Drama", "Comedy", "Romance", "Adventure", "Horror"],
+                  onChange: (value) {},
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

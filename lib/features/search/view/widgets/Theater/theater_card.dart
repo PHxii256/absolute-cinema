@@ -45,79 +45,74 @@ class TheaterCard extends ConsumerWidget {
     }
 
     return Card(
-      child: Expanded(
-        child: Padding(
-          padding: const EdgeInsets.all(14.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(4, 4, 4, 0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            airingInfo.first.theaterName,
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                          ),
-                          Text(
-                            "Location: ${getLocation()}",
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black54),
-                          ),
-                          Text(
-                            "Price: ${theaterData.theaterPriceRange}",
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.black54),
-                          ),
-                          Text(
-                            "Outside Snacks: ${theaterData.theaterSnacksPolicy}",
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Colors.black54),
-                          ),
-                          Text(
-                            "Offers Snacks: ${theaterData.offersSnacks}",
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Colors.black54),
-                          ),
-                          TextButton(
-                            style: TextButton.styleFrom(
-                              padding: EdgeInsets.zero,
-                              minimumSize: Size(50, 30),
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              alignment: Alignment.centerLeft,
-                            ),
-                            onPressed: () async {
-                              copyToClipboard(airingInfo.first.gMapsLink);
-                            },
-                            child: Text(
-                              "Google Maps: ${airingInfo.first.gMapsLink}",
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Colors.black54),
-                            ),
-                          ),
-                          SizedBox(height: 2),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Card(
-                    child: SizedBox(
-                      height: 140,
-                      width: 140,
-                      child: Center(
-                        child: Text(
-                          "image",
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black26),
+      child: Padding(
+        padding: const EdgeInsets.all(14.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(4, 4, 4, 0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(airingInfo.first.theaterName, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                        Text(
+                          "Location: ${getLocation()}",
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black54),
                         ),
+                        Text(
+                          "Price: ${theaterData.theaterPriceRange}",
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.black54),
+                        ),
+                        Text(
+                          "Outside Snacks: ${theaterData.theaterSnacksPolicy}",
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Colors.black54),
+                        ),
+                        Text(
+                          "Offers Snacks: ${theaterData.offersSnacks}",
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Colors.black54),
+                        ),
+                        TextButton(
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.zero,
+                            minimumSize: Size(50, 30),
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            alignment: Alignment.centerLeft,
+                          ),
+                          onPressed: () async {
+                            copyToClipboard(airingInfo.first.gMapsLink);
+                          },
+                          child: Text(
+                            "Google Maps: ${airingInfo.first.gMapsLink}",
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Colors.black54),
+                          ),
+                        ),
+                        SizedBox(height: 2),
+                      ],
+                    ),
+                  ),
+                ),
+                Card(
+                  child: SizedBox(
+                    height: 140,
+                    width: 140,
+                    child: Center(
+                      child: Text(
+                        "image",
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black26),
                       ),
                     ),
                   ),
-                ],
-              ),
-              TheaterScreeningTimePicker(airingInfo: airingInfo),
-            ],
-          ),
+                ),
+              ],
+            ),
+            TheaterScreeningTimePicker(airingInfo: airingInfo),
+          ],
         ),
       ),
     );

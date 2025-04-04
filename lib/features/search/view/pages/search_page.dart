@@ -25,7 +25,7 @@ class _SearchPage extends ConsumerState<SearchPage> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(14.0),
-      child: Column(
+      child: ListView(
         children: [
           SearchBar(
             onSubmitted: (value) {
@@ -46,7 +46,7 @@ class _SearchPage extends ConsumerState<SearchPage> {
             ],
           ),
           SizedBox(height: 12),
-          Expanded(child: SingleChildScrollView(child: MovieResults())),
+          SingleChildScrollView(child: MovieResults()),
         ],
       ),
     );
