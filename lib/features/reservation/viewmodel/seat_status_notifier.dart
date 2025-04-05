@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter_application/features/reservation/model/seat_status_data.dart';
 import 'package:flutter_application/features/reservation/model/theater_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -32,15 +31,14 @@ class SeatStatus extends _$SeatStatus {
     if (state.hasValue) {
       if (!seatBooked(seatData)) {
         final prevSeatStatusState = state;
-        if (seatReserved(seatData)) {
+        if (seatReservedByCurrentUser(seatData)) {
           try {
             state = optimisticUnreserve(seatData, screeningId, state.value!);
             await deleteReservedSeat(seatData, screeningId);
-            ref.invalidateSelf();
           } catch (err) {
             state = prevSeatStatusState;
           }
-        } else {
+        } else if (!seatReserved(seatData)) {
           try {
             state = optimisticReserve(seatData, screeningId, state.value!);
             await insertReservedSeat(seatData, screeningId);
@@ -96,7 +94,9 @@ class SeatStatus extends _$SeatStatus {
 
   Future<String?> _bookIfBalanceEnough(int? currentBalance) async {
     if (currentBalance != null) {
-      if (currentBalance < getTotalPrice()) {
+      final total = getTotalPrice();
+      if (total == null) return "error getting the cost please try again";
+      if (currentBalance < total) {
         return "balance is not enough to book seats :/";
       }
       return _bookSeats(currentBalance);
@@ -119,7 +119,9 @@ class SeatStatus extends _$SeatStatus {
 
   Future<String?> _bookSeats(int currentBalance) async {
     try {
-      await _deduceBalance(currentBalance, getTotalPrice());
+      final total = getTotalPrice();
+      if (total == null) return "error getting the cost please try again";
+      await _deduceBalance(currentBalance, total);
       await _addTicket();
       await Supabase.instance.client
           .from('reserved_seat')
@@ -261,6 +263,18 @@ class SeatStatus extends _$SeatStatus {
     return false;
   }
 
+  bool seatReservedByCurrentUser(SeatData seatData) {
+    String seatId = getSeatId(seatData.seatNo, seatData.isleID);
+
+    for (var element in state.value!) {
+      if (seatId == getSeatId(element.seatNumber, element.isleCode) &&
+          Supabase.instance.client.auth.currentUser!.id == element.userId) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   bool seatBooked(SeatData seatData) {
     String seatId = getSeatId(seatData.seatNo, seatData.isleID);
     final bookedlist =
@@ -275,11 +289,17 @@ class SeatStatus extends _$SeatStatus {
     return false;
   }
 
-  int getTotalPrice() {
-    final nonBookedReservedSeats = state.value!.where((seat) => !seat.booked).toList();
+  List<SeatStatusData> getNonBookedReservedSeats() {
+    return state.value!.where((seat) {
+      return !seat.booked && seat.userId == Supabase.instance.client.auth.currentUser!.id;
+    }).toList();
+  }
+
+  int? getTotalPrice() {
+    final nbrs = getNonBookedReservedSeats();
     int runningTotal = 0;
-    for (int i = 0; i < nonBookedReservedSeats.length; i++) {
-      if (!nonBookedReservedSeats[i].booked) runningTotal += nonBookedReservedSeats[i].price;
+    for (int i = 0; i < nbrs.length; i++) {
+      if (!nbrs[i].booked) runningTotal += nbrs[i].price;
     }
     return runningTotal;
   }
@@ -292,6 +312,5 @@ class SeatStatus extends _$SeatStatus {
   int generatePIN() {
     Random random = Random();
     return random.nextInt(1000000);
-    //String x = "${s.substring(0, 3)}-${s.substring(3, 6)}";
   }
 }

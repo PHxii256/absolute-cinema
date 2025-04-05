@@ -14,8 +14,6 @@ void main() async {
   runApp(ProviderScope(child: const MyApp()));
 }
 
-final supabase = Supabase.instance.client;
-
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
