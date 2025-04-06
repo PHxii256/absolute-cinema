@@ -2,20 +2,22 @@ import 'package:flutter/material.dart';
 import '../pages/movie_details_page.dart';
 
 class MoviePoster extends StatelessWidget {
-  final String imageUrl;
   final String movieName;
   final String description;
   final String director;
   final DateTime releaseDate;
-  final double rating;
+  final String rating;
+  final String? url;
+  final List<String> genres;
 
   const MoviePoster({
-    required this.imageUrl,
     required this.movieName,
     required this.description,
     required this.director,
     required this.releaseDate,
     required this.rating,
+    required this.url,
+    required this.genres,
     super.key,
   });
 
@@ -30,24 +32,20 @@ class MoviePoster extends StatelessWidget {
             MaterialPageRoute(
               builder:
                   (context) => MovieDetailsPage(
-                    imageUrl: imageUrl,
+                    url: url,
                     movieName: movieName,
                     description: description,
                     director: director,
                     releaseDate: _formatDate(releaseDate),
                     rating: rating,
+                    genres: genres,
                   ),
             ),
           );
         },
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image.asset(imageUrl, width: 120 * 2, height: 180 * 2, fit: BoxFit.cover),
-            ),
-          ],
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: url != null ? Image.network(url!) : Center(child: Text("Poster Not Found")),
         ),
       ),
     );

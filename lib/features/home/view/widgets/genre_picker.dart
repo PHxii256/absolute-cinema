@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/features/home/view/viewmodel/movie_screenings_notifier.dart';
 import 'package:flutter_application/features/search/view/widgets/Theater/choice_picker.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class GenrePicker extends StatelessWidget {
+class GenrePicker extends ConsumerWidget {
   const GenrePicker({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(16.0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -20,7 +22,7 @@ class GenrePicker extends StatelessWidget {
                 Text(
                   'Categories',
                   style: TextStyle(
-                    color: const Color.fromARGB(169, 0, 0, 0),
+                    color: const Color.fromARGB(146, 0, 0, 0),
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
@@ -38,7 +40,9 @@ class GenrePicker extends StatelessWidget {
               children: [
                 ChoicePicker(
                   choices: ["Action", "Drama", "Comedy", "Romance", "Adventure", "Horror"],
-                  onChange: (value) {},
+                  onChange: (value) {
+                    ref.read(movieScreeningsProvider.notifier).toggleGenreFilter(value);
+                  },
                 ),
               ],
             ),

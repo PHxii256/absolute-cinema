@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 
 class MovieDetailsPage extends StatelessWidget {
-  final String imageUrl;
+  final String? url;
   final String movieName;
   final String description;
   final String director;
   final String releaseDate;
-  final double rating;
+  final String rating;
+  final List<String> genres;
 
   const MovieDetailsPage({
-    required this.imageUrl,
+    required this.url,
     required this.movieName,
     required this.description,
     required this.director,
     required this.releaseDate,
     required this.rating,
+    required this.genres,
     super.key,
   });
 
@@ -31,9 +33,15 @@ class MovieDetailsPage extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Image.asset(imageUrl, width: 120, height: 180, fit: BoxFit.cover),
+                SizedBox(
+                  height: 120,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child:
+                        url != null
+                            ? Image.network(url!)
+                            : Center(child: Text("Poster Not Found", style: TextStyle(color: Colors.white))),
+                  ),
                 ),
                 const SizedBox(width: 16),
 
@@ -45,16 +53,16 @@ class MovieDetailsPage extends StatelessWidget {
                         movieName,
                         style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
                       ),
-                      const SizedBox(height: 8),
+                      Text("$genres", style: TextStyle(fontStyle: FontStyle.italic, color: Colors.white)),
+                      const SizedBox(height: 4),
                       Text("Director: $director", style: const TextStyle(fontSize: 16, color: Colors.white70)),
-                      const SizedBox(height: 5),
                       Text("Release Date: $releaseDate", style: const TextStyle(fontSize: 16, color: Colors.white70)),
-                      const SizedBox(height: 5),
+                      const SizedBox(height: 1),
                       Row(
                         children: [
                           const Icon(Icons.star, color: Colors.yellow, size: 20),
                           const SizedBox(width: 5),
-                          Text(rating.toString(), style: const TextStyle(fontSize: 16, color: Colors.white)),
+                          Text(rating, style: const TextStyle(fontSize: 16, color: Colors.white)),
                         ],
                       ),
                     ],
@@ -64,7 +72,6 @@ class MovieDetailsPage extends StatelessWidget {
             ),
 
             const SizedBox(height: 20),
-
             // Description Section
             const Text(
               "Description:",

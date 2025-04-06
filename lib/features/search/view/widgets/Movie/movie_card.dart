@@ -31,6 +31,7 @@ class MovieCard extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(movieData.name, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                        Text("${movieData.genres}", style: TextStyle(fontStyle: FontStyle.italic)),
                         ReadMoreText(
                           "Description: ${movieData.description}",
                           trimMode: TrimMode.Length,
@@ -53,17 +54,20 @@ class MovieCard extends ConsumerWidget {
                     ),
                   ),
                 ),
-                Card(
-                  child: SizedBox(
-                    height: 140,
-                    width: 140,
-                    child: Center(
-                      child: Text(
-                        "image",
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black26),
-                      ),
-                    ),
-                  ),
+                SizedBox(
+                  width: 130,
+                  child:
+                      movieData.posterUrl != null
+                          ? ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.network(movieData.posterUrl!),
+                          )
+                          : Center(
+                            child: Text(
+                              "image",
+                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black26),
+                            ),
+                          ),
                 ),
               ],
             ),

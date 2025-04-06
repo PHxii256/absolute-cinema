@@ -21,8 +21,9 @@ class MovieSearch extends _$MovieSearch {
     List<MovieData> movieResults = [];
     List<Map<String, dynamic>> dbResultList = await Supabase.instance.client
         .from('movie')
-        .select()
+        .select('*,  genres:genre(name)')
         .textSearch('name', query);
+
     for (var result in dbResultList) {
       MovieData movie = MovieData.fromJson(result);
       movieResults.add(movie);
