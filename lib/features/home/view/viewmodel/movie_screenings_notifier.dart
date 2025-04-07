@@ -3,10 +3,10 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 part 'movie_screenings_notifier.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class MovieScreenings extends _$MovieScreenings {
   final List<MovieData> _initialData = [];
-  String? _currentGenreFilter;
+  final Set<String> _currentGenreFilters = {};
 
   @override
   Future<List<MovieData>> build() async {
@@ -48,15 +48,10 @@ class MovieScreenings extends _$MovieScreenings {
   }
 
   List<MovieData> getFilteredMovies(List<MovieData> movieDataList) {
-    if (movieDataList.isEmpty) {
-      movieDataList = _initialData;
-    }
-    if (_currentGenreFilter != null) {
-      return movieDataList.where((movieData) {
-        if (movieData.genres == null) return true;
-        for (var genre in movieData.genres!) {
-          if (_currentGenreFilter!.toLowerCase() == genre.toLowerCase()) return true;
-        }
+    if (_currentGenreFilters.isNotEmpty) {
+      return movieDataList.where((movie) {
+        if (movie.genres == null) return true;
+        if (movie.genres!.toSet().containsAll(_currentGenreFilters)) return true;
         return false;
       }).toList();
     } else {
@@ -64,15 +59,15 @@ class MovieScreenings extends _$MovieScreenings {
     }
   }
 
-  void toggleGenreFilter(String? filter) {
+  void addFilter(String filter) {
     if (state.isLoading || state.hasError) return;
-    if (filter != null) {
-      _currentGenreFilter = filter;
-      state = AsyncValue.data(getFilteredMovies([...state.value!]));
-    } else {
-      _currentGenreFilter = null;
-      final x = getFilteredMovies([...state.value!]);
-      state = AsyncValue.data(x);
-    }
+    _currentGenreFilters.add(filter);
+    state = AsyncValue.data(getFilteredMovies([...state.value!]));
+  }
+
+  void removeFilter(String filter) {
+    if (state.isLoading || state.hasError) return;
+    _currentGenreFilters.remove(filter);
+    state = AsyncValue.data(getFilteredMovies([...state.value!]));
   }
 }

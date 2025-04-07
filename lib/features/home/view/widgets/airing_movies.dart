@@ -36,15 +36,7 @@ class AiringMovies extends ConsumerWidget {
                 scrollDirection: Axis.horizontal,
                 itemCount: value.length,
                 itemBuilder: (BuildContext context, int i) {
-                  return MoviePoster(
-                    movieName: value[i].name,
-                    description: value[i].description,
-                    rating: value[i].rating.toString(),
-                    director: value[i].director ?? "Not Specefied",
-                    releaseDate: value[i].releaseDate,
-                    url: value[i].posterUrl,
-                    genres: value[i].genres ?? [],
-                  );
+                  return MoviePoster(data: value[i]);
                 },
               ),
             ),

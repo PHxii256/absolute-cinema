@@ -97,18 +97,6 @@ class TheaterCard extends ConsumerWidget {
                     ),
                   ),
                 ),
-                Card(
-                  child: SizedBox(
-                    height: 140,
-                    width: 140,
-                    child: Center(
-                      child: Text(
-                        "image",
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black26),
-                      ),
-                    ),
-                  ),
-                ),
               ],
             ),
             TheaterScreeningTimePicker(airingInfo: airingInfo),

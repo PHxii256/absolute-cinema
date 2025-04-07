@@ -5,7 +5,8 @@ import 'package:flutter_application/features/search/viewmodel/theater_search_not
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TheaterResults extends ConsumerWidget {
-  const TheaterResults({super.key});
+  final int movieId;
+  const TheaterResults({super.key, required this.movieId});
 
   List<Widget> getCards(List<MovieAiringInfo> airingInfoList) {
     // only add card if contents are unique
@@ -26,7 +27,7 @@ class TheaterResults extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<List<MovieAiringInfo>> theaterData = ref.watch(theaterSearchProvider);
+    final AsyncValue<List<MovieAiringInfo>> theaterData = ref.watch(theaterSearchProvider(movieId: movieId));
     return Container(
       child: switch (theaterData) {
         AsyncData(:final value) => value.isNotEmpty ? Column(children: getCards(value)) : Container(),

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/features/reservation/view/pages/booking_page.dart';
 import 'package:flutter_application/features/search/model/movie_airing_info.dart';
 import 'package:flutter_application/features/search/view/widgets/Theater/choice_picker.dart';
-import 'package:flutter_application/features/search/viewmodel/movie_search_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
@@ -57,7 +56,7 @@ class _TheaterScreeningTimePickerState extends ConsumerState<TheaterScreeningTim
     int? chosenScreeningId = getChosenScreeningId();
     if (chosenScreeningId != null && widget.airingInfo.isNotEmpty) {
       final theaterId = widget.airingInfo.first.theaterId;
-      final movieId = ref.read(movieSearchProvider).value!.first.id;
+      final movieId = widget.airingInfo.first.movieId;
       final airingInfo = widget.airingInfo.first.copyWith(screeningId: chosenScreeningId);
 
       Navigator.of(context).push(

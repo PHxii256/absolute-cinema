@@ -1,25 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/features/search/model/movie_data.dart';
 import '../pages/movie_details_page.dart';
 
 class MoviePoster extends StatelessWidget {
-  final String movieName;
-  final String description;
-  final String director;
-  final DateTime releaseDate;
-  final String rating;
-  final String? url;
-  final List<String> genres;
+  final MovieData data;
 
-  const MoviePoster({
-    required this.movieName,
-    required this.description,
-    required this.director,
-    required this.releaseDate,
-    required this.rating,
-    required this.url,
-    required this.genres,
-    super.key,
-  });
+  const MoviePoster({required this.data, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,32 +13,22 @@ class MoviePoster extends StatelessWidget {
       padding: const EdgeInsets.only(right: 10.0),
       child: GestureDetector(
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder:
-                  (context) => MovieDetailsPage(
-                    url: url,
-                    movieName: movieName,
-                    description: description,
-                    director: director,
-                    releaseDate: _formatDate(releaseDate),
-                    rating: rating,
-                    genres: genres,
-                  ),
-            ),
-          );
+          Navigator.push(context, MaterialPageRoute(builder: (context) => MovieDetailsPage(data: data)));
         },
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10),
-          child: url != null ? Image.network(url!) : Center(child: Text("Poster Not Found")),
+          child:
+              data.posterUrl != null
+                  ? Image.network(
+                    data.posterUrl!,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return SizedBox(height: 300, width: 200, child: Card());
+                    },
+                  )
+                  : Center(child: Text("Poster Not Found")),
         ),
       ),
     );
-  }
-
-  // ✅ Helper function to format DateTime as a string
-  String _formatDate(DateTime date) {
-    return "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}";
   }
 }

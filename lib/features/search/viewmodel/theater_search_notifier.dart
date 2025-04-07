@@ -7,16 +7,8 @@ part 'theater_search_notifier.g.dart';
 @riverpod
 class TheaterSearch extends _$TheaterSearch {
   @override
-  Future<List<MovieAiringInfo>> build() async {
-    final movies = ref.watch(movieSearchProvider);
-    switch (movies) {
-      case AsyncData(:final value):
-        {
-          searchTheater(movieId: value.first.id);
-        }
-    }
-
-    return [];
+  Future<List<MovieAiringInfo>> build({required int movieId}) async {
+    return _getSearchResults(movieId);
   }
 
   Future<void> searchTheater({required int movieId}) async {
