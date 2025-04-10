@@ -1,5 +1,4 @@
 import 'package:flutter_application/features/search/model/movie_airing_info.dart';
-import 'package:flutter_application/features/search/viewmodel/movie_search_notifier.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 part 'theater_search_notifier.g.dart';

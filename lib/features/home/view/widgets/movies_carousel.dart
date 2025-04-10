@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/features/home/view/viewmodel/movie_screenings_notifier.dart';
 import 'package:flutter_application/features/home/view/widgets/movie_poster.dart';
+import 'package:flutter_application/features/search/model/movie_data.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AiringMovies extends ConsumerWidget {
-  const AiringMovies({super.key});
+class MoviesCarousel extends ConsumerWidget {
+  final String title;
+  final AsyncValue<List<MovieData>> asyncMovieList;
+  const MoviesCarousel({super.key, required this.title, required this.asyncMovieList});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final movieScreeningsThisWeek = ref.watch(movieScreeningsProvider);
-
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -20,29 +20,26 @@ class AiringMovies extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Airing This Week',
+                title,
                 style: TextStyle(color: const Color.fromARGB(146, 0, 0, 0), fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              TextButton(
-                onPressed: () {},
-                child: Text('See All', style: TextStyle(color: Colors.black38, fontSize: 16)),
               ),
             ],
           ),
-          switch (movieScreeningsThisWeek) {
-            AsyncData(:final value) => SizedBox(
-              height: 300,
-              child: ListView.builder(
+          SizedBox(height: 8),
+          SizedBox(
+            height: 180,
+            child: switch (asyncMovieList) {
+              AsyncData(:final value) => ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: value.length,
                 itemBuilder: (BuildContext context, int i) {
                   return MoviePoster(data: value[i]);
                 },
               ),
-            ),
-            AsyncError() => const Text('Oops, something unexpected happened'),
-            _ => const CircularProgressIndicator(),
-          },
+              AsyncError() => const Text('Oops, something unexpected happened'),
+              _ => Container(),
+            },
+          ),
         ],
       ),
     );

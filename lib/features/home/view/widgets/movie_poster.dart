@@ -23,7 +23,7 @@ class MoviePoster extends StatelessWidget {
                     data.posterUrl!,
                     loadingBuilder: (context, child, loadingProgress) {
                       if (loadingProgress == null) return child;
-                      return SizedBox(height: 300, width: 200, child: Card());
+                      return SizedBox(height: 180, width: 120, child: Card());
                     },
                   )
                   : Center(child: Text("Poster Not Found")),

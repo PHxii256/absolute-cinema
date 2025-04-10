@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/features/home/view/widgets/now_airing.dart';
-import 'package:flutter_application/features/search/view/widgets/Movie/search_widget.dart';
+import 'package:flutter_application/features/home/view/viewmodel/movie_filter_notifer.dart';
+import 'package:flutter_application/features/home/view/widgets/home.dart';
 import 'package:flutter_application/features/settings/view/pages/settings_page.dart';
 import 'package:flutter_application/features/tickets/view/pages/tickets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class MyHomePage extends StatefulWidget {
+class MyHomePage extends ConsumerStatefulWidget {
   const MyHomePage({super.key, required this.title});
   final String title;
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  ConsumerState<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends ConsumerState<MyHomePage> {
   int currentSelectedIndex = 1;
 
   @override
@@ -26,7 +27,10 @@ class _MyHomePageState extends State<MyHomePage> {
         selectedIndex: currentSelectedIndex,
         onDestinationSelected: (index) {
           setState(() {
-            currentSelectedIndex = index;
+            if (currentSelectedIndex != index) {
+              ref.read(movieFiltersProvider.notifier).resetFilters();
+              currentSelectedIndex = index;
+            }
           });
         },
         labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
