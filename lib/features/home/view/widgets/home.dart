@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/features/home/view/models/filter_data.dart';
 import 'package:flutter_application/features/home/view/viewmodel/movies_notifier.dart';
-import 'package:flutter_application/features/home/view/viewmodel/movie_screenings_di.dart';
+import 'package:flutter_application/features/home/view/viewmodel/movie_screenings_utils.dart';
 import 'package:flutter_application/features/home/view/widgets/home_picker.dart';
 import 'package:flutter_application/features/search/view/widgets/Movie/search_widget.dart';
 import 'package:flutter_application/features/search/viewmodel/search_query_provider.dart';
@@ -26,9 +26,12 @@ class NowAiring extends ConsumerWidget {
                 HomePicker(title: "Categories", filters: filterData.genreFilter, type: FilterType.genre),
                 MoviesCarousel(
                   title: 'Airing This Week',
-                  asyncMovieList: MovieScreeningsDI.airingThisWeek(allScreeningMovies),
+                  asyncMovieList: MovieScreeningsUtils.releasedMovies(allScreeningMovies),
                 ),
-                MoviesCarousel(title: 'Coming Soon', asyncMovieList: MovieScreeningsDI.comingSoon(allScreeningMovies)),
+                MoviesCarousel(
+                  title: 'Coming Soon',
+                  asyncMovieList: MovieScreeningsUtils.comingSoon(allScreeningMovies),
+                ),
               ],
             )
             : Container(),

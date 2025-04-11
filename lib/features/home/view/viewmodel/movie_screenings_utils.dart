@@ -4,25 +4,45 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'dart:developer';
 
-class MovieScreeningsDI {
+class MovieScreeningsUtils {
+  static Map<int, List<DateTime>> screeningTimesamps = {};
+
   static Future<List<MovieData>> getAllMovies() async {
     final resList = await Supabase.instance.client.from('movie_screening').select('*,movie(*, genres:genre(name))');
-
-    log("all: $resList");
     return _parseJson(resList);
+  }
+
+  static AsyncValue<List<MovieData>> releasedMovies(AsyncValue<List<MovieData>> provider) {
+    List<MovieData> releasedMovies = [];
+    if (provider.hasValue) {
+      for (var movieData in provider.value!) {
+        if (isReleased(movieData)) releasedMovies.add(movieData);
+      }
+    }
+    return AsyncData(releasedMovies);
   }
 
   static AsyncValue<List<MovieData>> airingThisWeek(AsyncValue<List<MovieData>> provider) {
     List<MovieData> airingThisWeek = [];
     if (provider.hasValue) {
-      for (var element in provider.value!) {
-        final dayDiff = element.releaseDate.difference(DateTime.now()).inDays;
-        if (dayDiff <= 0) {
-          airingThisWeek.add(element);
-        }
+      for (var movieData in provider.value!) {
+        if (isReleased(movieData) && _isAiringThisWeek(movieData)) airingThisWeek.add(movieData);
       }
     }
     return AsyncData(airingThisWeek);
+  }
+
+  static AsyncValue<List<MovieData>> comingSoon(AsyncValue<List<MovieData>> provider) {
+    List<MovieData> comingSoonMovies = [];
+    if (provider.hasValue) {
+      for (var movieData in provider.value!) {
+        final dayDiff = movieData.releaseDate.difference(DateTime.now()).inDays;
+        if (dayDiff > 0 && dayDiff < 30) {
+          comingSoonMovies.add(movieData);
+        }
+      }
+    }
+    return AsyncData(comingSoonMovies);
   }
 
   //TO:DO check on screening time (parse whole object as a model)
@@ -34,25 +54,49 @@ movie: {id: 1, name: Suzume, genres: [{name: Adventure}, {name: Comedy}, {name: 
  ,{id: 1, airing_timestamp: 2025-04-09T18:30:00, ticket_price: 60, hall_id: 1, theater_id: 1, movie_id: 1, vip_ticket_price: 120, ....
 */
 
-  static AsyncValue<List<MovieData>> comingSoon(AsyncValue<List<MovieData>> provider) {
-    List<MovieData> comingSoonMovies = [];
-    if (provider.hasValue) {
-      for (var element in provider.value!) {
-        final dayDiff = element.releaseDate.difference(DateTime.now()).inDays;
-        if (dayDiff > 0 && dayDiff < 30) {
-          comingSoonMovies.add(element);
-        }
-      }
+  static bool isReleased(MovieData data) {
+    final dayDiff = data.releaseDate.difference(DateTime.now()).inDays;
+    if (dayDiff <= 0) return true;
+    return false;
+  }
+
+  static bool _isAiringThisWeek(MovieData data) {
+    if (!screeningTimesamps.containsKey(data.id)) return false;
+    DateTime firstTimestamp = screeningTimesamps[data.id]!.first;
+
+    for (var timestamp in screeningTimesamps[data.id]!) {
+      timestamp.isBefore(firstTimestamp);
     }
-    return AsyncData(comingSoonMovies);
+
+    if (firstTimestamp.difference(DateTime.now()).inDays <= 7) return true;
+
+    return false;
   }
 
   static List<MovieData> _parseJson(List<Map<String, dynamic>> json) {
     final List<MovieData> movieDataList = [];
-    for (var res in json) {
-      final movieData = MovieData.fromJson(res["movie"]);
-      if (!movieDataList.contains(movieData)) movieDataList.add(movieData);
+    try {
+      for (var res in json) {
+        final movieData = MovieData.fromJson(res["movie"]);
+        final movieId = res["movie"]["id"];
+        final timestamp = DateTime.parse(res["airing_timestamp"]);
+
+        screeningTimesamps.update(
+          movieId,
+          (value) {
+            value.add(timestamp);
+            return value;
+          },
+          ifAbsent: () {
+            movieDataList.add(movieData);
+            return <DateTime>[timestamp];
+          },
+        );
+      }
+    } catch (e) {
+      log(e.toString());
     }
+    log(screeningTimesamps.toString());
     return movieDataList;
   }
 
