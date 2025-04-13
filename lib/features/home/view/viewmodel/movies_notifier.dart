@@ -11,9 +11,9 @@ class Movies extends _$Movies {
   @override
   Future<List<MovieData>> build() async {
     if (_initialData.isEmpty) {
-      _initialData = await MovieScreeningsUtils.getAllMovies();
+      _initialData = await getAllMovies();
     }
     final filterData = ref.watch(movieFiltersProvider);
-    return MovieScreeningsUtils.getFilteredMovies(_initialData, filterData);
+    return getFilteredMovies(_initialData, filterData);
   }
 }

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/features/home/view/models/filter_data.dart';
+import 'package:flutter_application/features/home/view/models/category_filter.dart';
 import 'package:flutter_application/features/home/view/widgets/filters_viewer.dart';
 import 'package:flutter_application/features/home/view/widgets/filter_picker.dart';
 
 class HomePicker extends StatelessWidget {
   final Set<String> filters;
-  final FilterType type;
   final String title;
-  const HomePicker({super.key, required this.title, required this.filters, required this.type});
+  const HomePicker({super.key, required this.title, required this.filters});
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +48,7 @@ class HomePicker extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: FilterPicker(filters: filters, type: type, isSingleValue: false, elevation: 0),
+          child: FilterPicker(filter: CategoryFilter(), elevation: 0),
         ),
       ],
     );
