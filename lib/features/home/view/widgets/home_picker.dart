@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/features/home/view/models/category_filter.dart';
+import 'package:flutter_application/features/home/models/filters/category_filter.dart';
 import 'package:flutter_application/features/home/view/widgets/filters_viewer.dart';
 import 'package:flutter_application/features/home/view/widgets/filter_picker.dart';
 

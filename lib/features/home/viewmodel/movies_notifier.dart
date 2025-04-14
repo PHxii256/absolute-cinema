@@ -1,5 +1,5 @@
-import 'package:flutter_application/features/home/view/viewmodel/movie_filter_notifer.dart';
-import 'package:flutter_application/features/home/view/viewmodel/movie_screenings_utils.dart';
+import 'package:flutter_application/features/home/viewmodel/movie_filter_notifer.dart';
+import 'package:flutter_application/features/home/viewmodel/movie_screenings_utils.dart';
 import 'package:flutter_application/features/search/model/movie_data.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'movies_notifier.g.dart';

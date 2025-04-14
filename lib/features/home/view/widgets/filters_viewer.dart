@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/features/home/view/models/age_filter.dart';
-import 'package:flutter_application/features/home/view/models/language_filter.dart';
+import 'package:flutter_application/features/home/models/filters/age_filter.dart';
+import 'package:flutter_application/features/home/models/filters/language_filter.dart';
 import 'package:flutter_application/features/home/view/widgets/filter_picker.dart';
 
 class FiltersViewer extends StatelessWidget {

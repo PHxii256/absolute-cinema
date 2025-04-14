@@ -1,4 +1,4 @@
-import 'package:flutter_application/features/home/view/models/abstract_filter.dart';
+import 'package:flutter_application/features/home/models/filters/abstract_filter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'movie_filter_notifer.g.dart';
 

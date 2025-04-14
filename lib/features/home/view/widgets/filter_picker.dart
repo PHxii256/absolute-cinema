@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/features/home/view/models/abstract_filter.dart';
-import 'package:flutter_application/features/home/view/viewmodel/movie_filter_notifer.dart';
+import 'package:flutter_application/features/home/models/filters/abstract_filter.dart';
+import 'package:flutter_application/features/home/viewmodel/movie_filter_notifer.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class FilterPicker extends ConsumerStatefulWidget {

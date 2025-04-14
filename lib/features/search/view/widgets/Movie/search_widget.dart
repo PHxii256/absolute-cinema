@@ -34,7 +34,7 @@ class _SearchPage extends ConsumerState<SearchWidget> {
             },
             elevation: WidgetStatePropertyAll(0),
             controller: myController,
-            hintText: "Search for a movie or a theater",
+            hintText: "Enter a movie or an actor's name",
             hintStyle: WidgetStateProperty.all<TextStyle>(const TextStyle(color: Colors.black45)),
 
             trailing: <Widget>[

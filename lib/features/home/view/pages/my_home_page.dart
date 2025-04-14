@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/features/home/view/viewmodel/movie_filter_notifer.dart';
+import 'package:flutter_application/features/home/viewmodel/movie_filter_notifer.dart';
 import 'package:flutter_application/features/home/view/widgets/home.dart';
 import 'package:flutter_application/features/settings/view/pages/settings_page.dart';
 import 'package:flutter_application/features/tickets/view/pages/tickets.dart';

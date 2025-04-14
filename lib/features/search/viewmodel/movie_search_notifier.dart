@@ -19,6 +19,32 @@ class MovieSearch extends _$MovieSearch {
 
   Future<List<MovieData>> _getSearchResults(String query) async {
     List<MovieData> movieResults = [];
+    movieResults = await _getMoviesByActor(query);
+    if (movieResults.isNotEmpty) return movieResults;
+    return await _getMoviesByName(query);
+  }
+
+  Future<List<MovieData>> _getMoviesByActor(String query) async {
+    List<MovieData> movieResults = [];
+    List<Map<String, dynamic>> dbResultList = await Supabase.instance.client
+        .from('actor')
+        .select('*, movie(*, genres:genre(name))')
+        .textSearch('name', query);
+
+    for (var result in dbResultList) {
+      final movieList = result["movie"];
+      for (var movie in movieList) {
+        movie as Map<String, dynamic>;
+        MovieData data = MovieData.fromJson(movie);
+        movieResults.add(data);
+      }
+    }
+
+    return movieResults;
+  }
+
+  Future<List<MovieData>> _getMoviesByName(String query) async {
+    List<MovieData> movieResults = [];
     List<Map<String, dynamic>> dbResultList = await Supabase.instance.client
         .from('movie')
         .select('*,  genres:genre(name)')

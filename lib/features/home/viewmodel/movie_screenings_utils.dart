@@ -1,7 +1,7 @@
-import 'package:flutter_application/features/home/view/models/abstract_filter.dart';
-import 'package:flutter_application/features/home/view/models/age_filter.dart';
-import 'package:flutter_application/features/home/view/models/category_filter.dart';
-import 'package:flutter_application/features/home/view/models/language_filter.dart';
+import 'package:flutter_application/features/home/models/filters/abstract_filter.dart';
+import 'package:flutter_application/features/home/models/filters/age_filter.dart';
+import 'package:flutter_application/features/home/models/filters/category_filter.dart';
+import 'package:flutter_application/features/home/models/filters/language_filter.dart';
 import 'package:flutter_application/features/search/model/movie_data.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';

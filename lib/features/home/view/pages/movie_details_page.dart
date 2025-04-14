@@ -1,28 +1,19 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_application/features/home/view/widgets/cast_viewer.dart';
+import 'package:flutter_application/features/home/viewmodel/actor_notifier.dart';
 import 'package:flutter_application/features/search/model/movie_data.dart';
 import 'package:flutter_application/features/search/view/widgets/Theater/theater_results.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class MovieDetailsPage extends StatelessWidget {
+class MovieDetailsPage extends ConsumerWidget {
   final MovieData data;
   const MovieDetailsPage({required this.data, super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     String getReleaseDate() => "${data.releaseDate.year}-${data.releaseDate.month}-${data.releaseDate.day}";
-
-    Widget buildCastAvatar(String name, String role) {
-      return Padding(
-        padding: const EdgeInsets.only(right: 16),
-        child: Column(
-          children: [
-            CircleAvatar(radius: 24, child: Icon(Icons.person)),
-            SizedBox(height: 4),
-            Text(name, style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
-            Text(role, style: TextStyle(fontSize: 11)),
-          ],
-        ),
-      );
-    }
 
     return Scaffold(
       appBar: AppBar(title: Text(data.name)),
@@ -80,7 +71,6 @@ class MovieDetailsPage extends StatelessWidget {
             ),
 
             const SizedBox(height: 20),
-            // Description Section
             const Text("Description:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             const SizedBox(height: 6),
             Column(
@@ -88,25 +78,7 @@ class MovieDetailsPage extends StatelessWidget {
               children: [
                 Text(data.description, style: const TextStyle(fontSize: 16, color: Colors.black54)),
                 SizedBox(height: 12),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Cast", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 6),
-                    SizedBox(
-                      height: 90,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        shrinkWrap: true,
-                        children: [
-                          buildCastAvatar("Bombardero", "Director"),
-                          buildCastAvatar("Tralalero", "Writer"),
-                          buildCastAvatar("Tun Sahur", "Actor"),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                CastViewer(movieData: data),
               ],
             ),
             Padding(

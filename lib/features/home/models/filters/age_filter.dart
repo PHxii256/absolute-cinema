@@ -1,4 +1,4 @@
-import 'package:flutter_application/features/home/view/models/abstract_filter.dart';
+import 'package:flutter_application/features/home/models/filters/abstract_filter.dart';
 
 class AgeFilter implements AbstractFilter {
   @override
