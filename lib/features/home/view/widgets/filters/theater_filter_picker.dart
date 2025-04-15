@@ -1,19 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/features/home/models/filters/abstract_filter.dart';
-import 'package:flutter_application/features/home/viewmodel/movie_filter_notifer.dart';
+import 'package:flutter_application/features/home/view/widgets/filters/abstract_filter_picker.dart';
+import 'package:flutter_application/features/home/viewmodel/theater_filter_notifer.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class FilterPicker extends ConsumerStatefulWidget {
+class TheaterFilterPicker extends ConsumerStatefulWidget implements FilterPicker {
   final AbstractFilter filter;
   final double? elevation;
-  const FilterPicker({super.key, required this.filter, this.elevation});
+  const TheaterFilterPicker({super.key, required this.filter, this.elevation});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _FilterPickerState();
 }
 
-class _FilterPickerState extends ConsumerState<FilterPicker> {
+class _FilterPickerState extends ConsumerState<TheaterFilterPicker> {
   Set<String> currentFilters = <String>{};
+
+  @override
+  void initState() {
+    currentFilters = ref.read(theaterFiltersProvider.notifier).getCurrentSet(widget.filter);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,10 +43,12 @@ class _FilterPickerState extends ConsumerState<FilterPicker> {
                   onSelected: (bool selected) {
                     setState(() {
                       if (selected) {
-                        currentFilters = ref.read(movieFiltersProvider.notifier).addFilter(widget.filter, filterString);
+                        currentFilters = ref
+                            .read(theaterFiltersProvider.notifier)
+                            .addFilter(widget.filter, filterString);
                       } else {
                         currentFilters = ref
-                            .read(movieFiltersProvider.notifier)
+                            .read(theaterFiltersProvider.notifier)
                             .removeFilter(widget.filter, filterString);
                       }
                     });

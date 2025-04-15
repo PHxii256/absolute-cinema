@@ -1,10 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application/features/home/view/widgets/cast_viewer.dart';
-import 'package:flutter_application/features/home/viewmodel/actor_notifier.dart';
+import 'package:flutter_application/features/home/view/widgets/details_page_fab.dart';
 import 'package:flutter_application/features/search/model/movie_data.dart';
 import 'package:flutter_application/features/search/view/widgets/Theater/theater_results.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class MovieDetailsPage extends ConsumerWidget {
@@ -16,6 +15,8 @@ class MovieDetailsPage extends ConsumerWidget {
     String getReleaseDate() => "${data.releaseDate.year}-${data.releaseDate.month}-${data.releaseDate.day}";
 
     return Scaffold(
+      floatingActionButtonLocation: ExpandableFab.location,
+      floatingActionButton: DetailsPageFab(movieId: data.id),
       appBar: AppBar(title: Text(data.name)),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

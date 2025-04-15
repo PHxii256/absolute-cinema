@@ -1,7 +1,7 @@
 import 'package:flutter_application/features/home/models/filters/abstract_filter.dart';
-import 'package:flutter_application/features/home/models/filters/age_filter.dart';
-import 'package:flutter_application/features/home/models/filters/category_filter.dart';
-import 'package:flutter_application/features/home/models/filters/language_filter.dart';
+import 'package:flutter_application/features/home/models/filters/movie/age_filter.dart';
+import 'package:flutter_application/features/home/models/filters/movie/category_filter.dart';
+import 'package:flutter_application/features/home/models/filters/movie/language_filter.dart';
 import 'package:flutter_application/features/search/model/movie_data.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -47,15 +47,6 @@ AsyncValue<List<MovieData>> comingSoon(AsyncValue<List<MovieData>> provider) {
   return AsyncData(comingSoonMovies);
 }
 
-//TO:DO check on screening time (parse whole object as a model)
-/*
-[{id: 2, airing_timestamp: 2025-03-31T20:30:00, ticket_price: 60, hall_id: 1, theater_id: 1, movie_id: 1, vip_ticket_price: 120, 
-movie: {id: 1, name: Suzume, genres: [{name: Adventure}, {name: Comedy}, {name: Anime}], rating: 7.6, director: Makato Shinkai, poster_url: https://bvquxsswjrznbrlcxrkk.supabase.co/storage/v1/object/sign/posters/Suzume.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJwb3N0ZXJzL1N1enVtZS5wbmciLCJpYXQiOjE3NDM5NjQ1MDksImV4cCI6MzMyNDg0Mjg1MDl9.ic-tKg6iZCfqXXBGn-3WYz51O_JTV2W_RfNHmvbOf3g,
- description: A modern action adventure road story where a 17-year-old girl named Suzume helps a mysterious young man close doors from the other side that are releasing disasters all over in Japan., 
- release_date: 2022-11-11, age_rating_min: 12, duration_minutes: 122, primary_language: Japanese, subtitle_languages: [Arabic, English]}}
- ,{id: 1, airing_timestamp: 2025-04-09T18:30:00, ticket_price: 60, hall_id: 1, theater_id: 1, movie_id: 1, vip_ticket_price: 120, ....
-*/
-
 bool isReleased(MovieData data) {
   final dayDiff = data.releaseDate.difference(DateTime.now()).inDays;
   if (dayDiff <= 0) return true;
@@ -98,7 +89,6 @@ List<MovieData> _parseJson(List<Map<String, dynamic>> json) {
   } catch (e) {
     log(e.toString());
   }
-  log(screeningTimesamps.toString());
   return movieDataList;
 }
 

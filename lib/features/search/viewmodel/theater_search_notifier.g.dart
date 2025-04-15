@@ -6,7 +6,7 @@ part of 'theater_search_notifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$theaterSearchHash() => r'81dd5bd4cdf91a3e1bb210782515df1f3f0eb492';
+String _$theaterSearchHash() => r'd8964fa692c70e2013d521466b449ff62cd06190';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,7 +30,7 @@ class _SystemHash {
 }
 
 abstract class _$TheaterSearch
-    extends BuildlessAutoDisposeAsyncNotifier<List<MovieAiringInfo>> {
+    extends BuildlessAsyncNotifier<List<MovieAiringInfo>> {
   late final int movieId;
 
   FutureOr<List<MovieAiringInfo>> build({required int movieId});
@@ -74,11 +74,7 @@ class TheaterSearchFamily extends Family<AsyncValue<List<MovieAiringInfo>>> {
 
 /// See also [TheaterSearch].
 class TheaterSearchProvider
-    extends
-        AutoDisposeAsyncNotifierProviderImpl<
-          TheaterSearch,
-          List<MovieAiringInfo>
-        > {
+    extends AsyncNotifierProviderImpl<TheaterSearch, List<MovieAiringInfo>> {
   /// See also [TheaterSearch].
   TheaterSearchProvider({required int movieId})
     : this._internal(
@@ -131,7 +127,7 @@ class TheaterSearchProvider
   }
 
   @override
-  AutoDisposeAsyncNotifierProviderElement<TheaterSearch, List<MovieAiringInfo>>
+  AsyncNotifierProviderElement<TheaterSearch, List<MovieAiringInfo>>
   createElement() {
     return _TheaterSearchProviderElement(this);
   }
@@ -152,18 +148,13 @@ class TheaterSearchProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin TheaterSearchRef
-    on AutoDisposeAsyncNotifierProviderRef<List<MovieAiringInfo>> {
+mixin TheaterSearchRef on AsyncNotifierProviderRef<List<MovieAiringInfo>> {
   /// The parameter `movieId` of this provider.
   int get movieId;
 }
 
 class _TheaterSearchProviderElement
-    extends
-        AutoDisposeAsyncNotifierProviderElement<
-          TheaterSearch,
-          List<MovieAiringInfo>
-        >
+    extends AsyncNotifierProviderElement<TheaterSearch, List<MovieAiringInfo>>
     with TheaterSearchRef {
   _TheaterSearchProviderElement(super.provider);
 

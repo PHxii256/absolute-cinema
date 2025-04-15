@@ -18,6 +18,5 @@ class CastAvatar extends StatelessWidget {
         ],
       ),
     );
-    ;
   }
 }

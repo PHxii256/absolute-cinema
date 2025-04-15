@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/features/home/models/filters/category_filter.dart';
+import 'package:flutter_application/features/home/models/filters/movie/category_filter.dart';
 import 'package:flutter_application/features/home/viewmodel/movies_notifier.dart';
 import 'package:flutter_application/features/home/viewmodel/movie_screenings_utils.dart';
 import 'package:flutter_application/features/home/view/widgets/home_picker.dart';

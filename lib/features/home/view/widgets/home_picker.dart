@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/features/home/models/filters/category_filter.dart';
-import 'package:flutter_application/features/home/view/widgets/filters_viewer.dart';
-import 'package:flutter_application/features/home/view/widgets/filter_picker.dart';
+import 'package:flutter_application/features/home/models/filters/movie/age_filter.dart';
+import 'package:flutter_application/features/home/models/filters/movie/category_filter.dart';
+import 'package:flutter_application/features/home/models/filters/movie/language_filter.dart';
+import 'package:flutter_application/features/home/view/widgets/filters/filter_viewer.dart';
+import 'package:flutter_application/features/home/view/widgets/filters/movie_filter_picker.dart';
 
 class HomePicker extends StatelessWidget {
   final Set<String> filters;
@@ -36,7 +38,12 @@ class HomePicker extends StatelessWidget {
                       return SizedBox(
                         height: MediaQuery.of(context).size.height * 0.25,
                         width: double.infinity,
-                        child: FiltersViewer(),
+                        child: FiltersViewer(
+                          filterMap: {
+                            "Language": MovieFilterPicker(filter: LanguageFilter()),
+                            "Age Rating": MovieFilterPicker(filter: AgeFilter()),
+                          },
+                        ),
                       );
                     },
                   );
@@ -48,7 +55,7 @@ class HomePicker extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: FilterPicker(filter: CategoryFilter(), elevation: 0),
+          child: MovieFilterPicker(filter: CategoryFilter(), elevation: 0),
         ),
       ],
     );

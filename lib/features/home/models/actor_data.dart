@@ -3,13 +3,11 @@ part 'actor_data.freezed.dart';
 part 'actor_data.g.dart';
 
 String _readName(Map json, _) {
-  if (json["actor"]["name"] == null) return "h";
   return json["actor"]["name"] as String;
 }
 
 int _readId(Map json, _) {
-  if (json["actor"]["id"] == null) return -1;
-  return json["actor"]["id"] as int? ?? -1;
+  return json["actor"]["id"] as int;
 }
 
 @freezed

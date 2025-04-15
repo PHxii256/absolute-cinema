@@ -50,6 +50,7 @@ dependencies:
   uuid: ^4.5.1
   cached_network_image: ^3.4.1
   skeletonizer: ^1.4.3
+  flutter_expandable_fab: ^2.4.1
 
 dev_dependencies:
   flutter_test:
