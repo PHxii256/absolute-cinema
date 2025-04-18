@@ -46,5 +46,10 @@ class MovieFilters extends _$MovieFilters {
 
   void resetFilters() => state = {};
 
-  Set<String> getCurrentSet(AbstractFilter filter) => state.containsKey(filter) ? state[filter]! : {};
+  Set<String> getCurrentSet(AbstractFilter filter) {
+    for (var entry in state.entries) {
+      if (entry.key.defaultSet.containsAll(filter.defaultSet)) return entry.value;
+    }
+    return {};
+  }
 }

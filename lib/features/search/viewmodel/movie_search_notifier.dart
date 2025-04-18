@@ -1,3 +1,4 @@
+import 'package:flutter_application/features/home/viewmodel/movie_screenings_utils.dart';
 import 'package:flutter_application/features/search/model/movie_data.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -10,11 +11,11 @@ class MovieSearch extends _$MovieSearch {
     return [];
   }
 
-  Future<void> searchQuery(String query) async {
+  void searchQuery(String query) async {
     state = AsyncValue.loading();
-    state = await AsyncValue.guard(() async {
-      return _getSearchResults(query);
-    });
+    //final filters = ref.read(movieFiltersProvider);
+    final queryRes = await _getSearchResults(query);
+    state = AsyncData(getFilteredMovies(queryRes, {}));
   }
 
   Future<List<MovieData>> _getSearchResults(String query) async {
@@ -54,6 +55,19 @@ class MovieSearch extends _$MovieSearch {
       MovieData movie = MovieData.fromJson(result);
       movieResults.add(movie);
     }
+
+    if (movieResults.isEmpty) {
+      List<Map<String, dynamic>> dbResultList = await Supabase.instance.client
+          .from('movie')
+          .select('*,  genres:genre(name)')
+          .ilike('name', '$query%');
+
+      for (var result in dbResultList) {
+        MovieData movie = MovieData.fromJson(result);
+        movieResults.add(movie);
+      }
+    }
+
     return movieResults;
   }
 }

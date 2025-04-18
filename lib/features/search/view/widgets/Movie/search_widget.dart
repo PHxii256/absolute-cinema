@@ -52,6 +52,7 @@ class _SearchPage extends ConsumerState<SearchWidget> {
                         )
                         : IconButton(
                           onPressed: () {
+                            FocusScope.of(context).unfocus();
                             myController.clear();
                             myController.clearComposing();
                             ref.read(queryProvider.notifier).update((prev) => "");

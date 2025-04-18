@@ -23,6 +23,11 @@ class _DetailsPageFabState extends State<DetailsPageFab> {
     super.initState();
   }
 
+  double getBlur() {
+    blur = 5;
+    return blur;
+  }
+
   void onPressHandler() {
     final state = _key.currentState;
     if (state != null) {
@@ -34,12 +39,11 @@ class _DetailsPageFabState extends State<DetailsPageFab> {
   Widget build(BuildContext context) {
     return ExpandableFab(
       onClose: () => blur = 0,
-      onOpen: () => blur = 5,
       type: ExpandableFabType.up,
       key: _key,
       childrenAnimation: ExpandableFabAnimation.none,
       distance: 70, //cation: setting blur crashes the app wih the impeller renderer
-      overlayStyle: ExpandableFabOverlayStyle(color: Colors.white38, blur: blur),
+      overlayStyle: ExpandableFabOverlayStyle(color: Colors.white38, blur: getBlur()),
       children: [
         Row(
           children: [

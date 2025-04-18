@@ -1,4 +1,6 @@
 import 'package:flutter_application/features/home/models/filters/abstract_filter.dart';
+import 'package:flutter_application/features/home/models/filters/theater/allow_snacks_filter.dart';
+import 'package:flutter_application/features/search/model/movie_airing_info.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'theater_filter_notifer.g.dart';
 
@@ -51,5 +53,29 @@ class TheaterFilters extends _$TheaterFilters {
       if (entry.key.defaultSet.containsAll(filter.defaultSet)) return entry.value;
     }
     return {};
+  }
+
+  List<MovieAiringInfo> getFilteredMovies(
+    List<MovieAiringInfo> initialData,
+    Map<AbstractFilter, Set<String>> currentFilters,
+  ) {
+    if (initialData.isNotEmpty) {
+      return initialData.where((movie) {
+        if (allFiltersMatch(movie, currentFilters)) return true;
+        return false;
+      }).toList();
+    } else {
+      return initialData;
+    }
+  }
+
+  bool allFiltersMatch(MovieAiringInfo airingInfo, Map<AbstractFilter, Set<String>> currentFilters) {
+    for (var entry in currentFilters.entries) {
+      if (entry.value.isEmpty) break;
+      if (entry.key is AllowSnacksFilter) {
+        if (airingInfo.allowsSnacks != AllowSnacksFilter.allowSnacks(entry.value)) return false;
+      }
+    }
+    return true;
   }
 }

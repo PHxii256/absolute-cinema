@@ -17,6 +17,12 @@ class _FilterPickerState extends ConsumerState<MovieFilterPicker> {
   Set<String> currentFilters = <String>{};
 
   @override
+  void initState() {
+    currentFilters = ref.read(movieFiltersProvider.notifier).getCurrentSet(widget.filter);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 40,
