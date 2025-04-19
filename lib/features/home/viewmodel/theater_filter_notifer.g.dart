@@ -6,7 +6,7 @@ part of 'theater_filter_notifer.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$theaterFiltersHash() => r'8f57150d05e14e2c661115d400db0d48f975a1d3';
+String _$theaterFiltersHash() => r'cfee7dce528a63444785765be4899a5de445bac6';
 
 /// See also [TheaterFilters].
 @ProviderFor(TheaterFilters)

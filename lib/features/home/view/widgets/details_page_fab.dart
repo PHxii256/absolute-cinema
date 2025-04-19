@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/features/home/models/filters/theater/allow_snacks_filter.dart';
 import 'package:flutter_application/features/home/view/widgets/filters/filter_viewer.dart';
 import 'package:flutter_application/features/home/view/widgets/filters/theater_filter_picker.dart';
-import 'package:flutter_application/features/home/view/widgets/sort_options.dart';
+import 'package:flutter_application/features/home/view/widgets/theater_sort_options.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 
 class DetailsPageFab extends StatefulWidget {
@@ -71,7 +71,7 @@ class _DetailsPageFabState extends State<DetailsPageFab> {
                     return SizedBox(
                       height: MediaQuery.of(context).size.height * 0.25,
                       width: double.infinity,
-                      child: SortOptions(movieId: widget.movieId),
+                      child: TheaterSortOptions(movieId: widget.movieId),
                     );
                   },
                 );

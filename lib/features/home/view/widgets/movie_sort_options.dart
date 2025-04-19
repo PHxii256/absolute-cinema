@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/features/search/viewmodel/theater_search_notifier.dart';
+import 'package:flutter_application/features/search/viewmodel/movie_search_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SortOptions extends ConsumerWidget {
-  final int movieId;
-  const SortOptions({super.key, required this.movieId});
+class MovieSortOptions extends ConsumerWidget {
+  const MovieSortOptions({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -17,15 +16,15 @@ class SortOptions extends ConsumerWidget {
           SizedBox(height: 4),
           ElevatedButton(
             onPressed: () {
-              ref.read(theaterSearchProvider(movieId: movieId).notifier).sortByPriceAsc();
+              ref.read(movieSearchProvider.notifier).sortByRatingAsc();
             },
-            child: Text("Sort By Price Ascending"),
+            child: Text("Sort By Rating Ascending"),
           ),
           ElevatedButton(
             onPressed: () {
-              ref.read(theaterSearchProvider(movieId: movieId).notifier).sortByPriceDesc();
+              ref.read(movieSearchProvider.notifier).sortByRatingDesc();
             },
-            child: Text("Sort By Price Descending"),
+            child: Text("Sort By Rating Descending"),
           ),
         ],
       ),

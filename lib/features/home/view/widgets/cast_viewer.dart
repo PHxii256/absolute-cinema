@@ -30,11 +30,10 @@ class CastViewer extends ConsumerWidget {
         Text("Cast", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
         SizedBox(height: 6),
         SizedBox(
-          height: 90,
+          height: 105,
           child: ListView(
             scrollDirection: Axis.horizontal,
-            shrinkWrap: true,
-            children: [CastAvatar(name: movieData.director ?? "Bombardero", role: "Director"), ...getActorWidgets()],
+            children: [CastAvatar(name: movieData.director ?? "Missing Data", role: "Director"), ...getActorWidgets()],
           ),
         ),
       ],

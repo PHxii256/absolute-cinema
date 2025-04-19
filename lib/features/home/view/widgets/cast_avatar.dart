@@ -8,14 +8,28 @@ class CastAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: 16),
-      child: Column(
-        children: [
-          CircleAvatar(radius: 24, child: Icon(Icons.person)),
-          SizedBox(height: 4),
-          Text(name, style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
-          Text(role, style: TextStyle(fontSize: 11)),
-        ],
+      padding: const EdgeInsets.only(right: 8),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: 100),
+        child: Column(
+          children: [
+            CircleAvatar(radius: 24, child: Icon(Icons.person)),
+            SizedBox(height: 4),
+            Text(
+              textWidthBasis: TextWidthBasis.longestLine,
+              name,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, height: 1),
+            ),
+            SizedBox(height: 4),
+            Text(
+              role,
+              textAlign: TextAlign.center,
+              textWidthBasis: TextWidthBasis.longestLine,
+              style: TextStyle(fontSize: 13, fontStyle: FontStyle.italic, height: 1),
+            ),
+          ],
+        ),
       ),
     );
   }

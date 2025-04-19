@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/features/home/view/widgets/movie_sort_options.dart';
 import 'package:flutter_application/features/search/viewmodel/movie_search_notifier.dart';
 import 'package:flutter_application/features/search/viewmodel/search_query_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -63,7 +64,26 @@ class _SearchPage extends ConsumerState<SearchWidget> {
               Container(
                 width: 50,
                 padding: EdgeInsets.all(4),
-                child: IconButton(onPressed: () {}, icon: const Icon(Icons.sort)),
+                child: IconButton(
+                  onPressed: () {
+                    showModalBottomSheet(
+                      showDragHandle: true,
+                      barrierColor: const Color.fromARGB(190, 0, 0, 0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(topLeft: Radius.circular(6), topRight: Radius.circular(6)),
+                      ),
+                      context: context,
+                      builder: (context) {
+                        return SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.25,
+                          width: double.infinity,
+                          child: MovieSortOptions(),
+                        );
+                      },
+                    );
+                  },
+                  icon: const Icon(Icons.sort),
+                ),
               ),
             ],
           ),

@@ -1,3 +1,4 @@
+import 'package:flutter_application/features/home/viewmodel/movie_filter_notifer.dart';
 import 'package:flutter_application/features/home/viewmodel/movie_screenings_utils.dart';
 import 'package:flutter_application/features/search/model/movie_data.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -13,9 +14,9 @@ class MovieSearch extends _$MovieSearch {
 
   void searchQuery(String query) async {
     state = AsyncValue.loading();
-    //final filters = ref.read(movieFiltersProvider);
+    final filters = ref.read(movieFiltersProvider);
     final queryRes = await _getSearchResults(query);
-    state = AsyncData(getFilteredMovies(queryRes, {}));
+    state = AsyncData(getFilteredMovies(queryRes, filters));
   }
 
   Future<List<MovieData>> _getSearchResults(String query) async {
@@ -69,5 +70,21 @@ class MovieSearch extends _$MovieSearch {
     }
 
     return movieResults;
+  }
+
+  void sortByRatingAsc() {
+    if (state.hasValue) {
+      final List<MovieData> currentList = state.value!;
+      currentList.sort((a, b) => (a.rating ?? 0).compareTo(b.rating ?? 0));
+      state = AsyncData(currentList);
+    }
+  }
+
+  void sortByRatingDesc() {
+    if (state.hasValue) {
+      final List<MovieData> currentList = state.value!;
+      currentList.sort((b, a) => (a.rating ?? 0).compareTo(b.rating ?? 0));
+      state = AsyncData(currentList);
+    }
   }
 }
