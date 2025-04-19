@@ -1,3 +1,4 @@
+import 'dart:developer' as dev;
 import 'dart:math';
 import 'package:flutter_application/features/reservation/model/seat_status_data.dart';
 import 'package:flutter_application/features/reservation/model/theater_model.dart';
@@ -81,25 +82,25 @@ class SeatStatus extends _$SeatStatus {
     try {
       final currentBalance = await tryGetBalance();
       if (currentBalance != null) {
-        return await _bookIfBalanceEnough(currentBalance);
+        return await _bookIfBalanceEnough(currentBalance, screeningId);
       } else {
         await _createBalanceRecord();
         final currentBalance = await tryGetBalance();
-        return await _bookIfBalanceEnough(currentBalance);
+        return await _bookIfBalanceEnough(currentBalance, screeningId);
       }
     } catch (e) {
       return e.toString();
     }
   }
 
-  Future<String?> _bookIfBalanceEnough(int? currentBalance) async {
+  Future<String?> _bookIfBalanceEnough(int? currentBalance, int screeningId) async {
     if (currentBalance != null) {
       final total = getTotalPrice();
       if (total == null) return "error getting the cost please try again";
       if (currentBalance < total) {
         return "balance is not enough to book seats :/";
       }
-      return _bookSeats(currentBalance);
+      return _bookSeats(currentBalance, screeningId);
     }
     return "balance not found";
   }
@@ -117,12 +118,12 @@ class SeatStatus extends _$SeatStatus {
     }
   }
 
-  Future<String?> _bookSeats(int currentBalance) async {
+  Future<String?> _bookSeats(int currentBalance, int screeningId) async {
     try {
       final total = getTotalPrice();
       if (total == null) return "error getting the cost please try again";
       await _deduceBalance(currentBalance, total);
-      await _addTicket();
+      await _addTicket(screeningId);
       await Supabase.instance.client
           .from('reserved_seat')
           .update({'booked': true})
@@ -133,16 +134,18 @@ class SeatStatus extends _$SeatStatus {
     }
   }
 
-  Future<String?> _addTicket() async {
+  Future<String?> _addTicket(int screeningId) async {
     try {
       final pinCode = generatePIN();
       final qrId = generateQrId();
-      await Supabase.instance.client.from('ticket').insert({
+      await Supabase.instance.client.from('ticket').upsert({
         'qr_id': qrId.toString(),
         'pin_code': pinCode,
         'user_id': Supabase.instance.client.auth.currentUser!.id,
+        'movie_screening_id': screeningId,
       });
     } catch (e) {
+      dev.log(e.toString());
       return e.toString();
     }
     return null;

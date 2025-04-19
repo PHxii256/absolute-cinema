@@ -129,41 +129,39 @@ class _CreditCardFormState extends ConsumerState<CreditCardForm> {
               SizedBox(
                 height: 40,
                 width: double.maxFinite,
-                child: Expanded(
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      final isValid = _globalFormKey.currentState!.validate();
-                      if (isValid) {
-                        if (saveCardInfo) {
-                          // Load and obtain the shared preferences for this app.
-                          final prefs = await SharedPreferences.getInstance();
-                          // Save the counter value to persistent storage under the 'counter' key.
-                          await prefs.setString('cardHolderName', cardHolderName.text);
-                          await prefs.setString('cardNumber', cardNumber.text);
-                          await prefs.setString('cardExpirationDate', cardExpirationDate.text);
-                          await prefs.setString('cardCvv', cardCvv.text);
-                        }
+                child: ElevatedButton(
+                  onPressed: () async {
+                    final isValid = _globalFormKey.currentState!.validate();
+                    if (isValid) {
+                      if (saveCardInfo) {
+                        // Load and obtain the shared preferences for this app.
+                        final prefs = await SharedPreferences.getInstance();
+                        // Save the counter value to persistent storage under the 'counter' key.
+                        await prefs.setString('cardHolderName', cardHolderName.text);
+                        await prefs.setString('cardNumber', cardNumber.text);
+                        await prefs.setString('cardExpirationDate', cardExpirationDate.text);
+                        await prefs.setString('cardCvv', cardCvv.text);
+                      }
 
-                        ref.read(countdownProvider.notifier).cancelTimer();
-                        final String? bookedErr = await ref
-                            .read(seatStatusProvider(widget.screeningId).notifier)
-                            .tryBookSeats(widget.screeningId);
-                        if (context.mounted) {
-                          if (bookedErr == null) {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentConfirmation()));
-                          } else {
-                            ref
-                                .read(seatStatusProvider(widget.screeningId).notifier)
-                                .deleteAllReservedSeats(widget.screeningId);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(behavior: SnackBarBehavior.floating, content: Text("Error: $bookedErr")),
-                            );
-                          }
+                      ref.read(countdownProvider.notifier).cancelTimer();
+                      final String? bookedErr = await ref
+                          .read(seatStatusProvider(widget.screeningId).notifier)
+                          .tryBookSeats(widget.screeningId);
+                      if (context.mounted) {
+                        if (bookedErr == null) {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentConfirmation()));
+                        } else {
+                          ref
+                              .read(seatStatusProvider(widget.screeningId).notifier)
+                              .deleteAllReservedSeats(widget.screeningId);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(behavior: SnackBarBehavior.floating, content: Text("Error: $bookedErr")),
+                          );
                         }
                       }
-                    },
-                    child: const Text('Pay'),
-                  ),
+                    }
+                  },
+                  child: const Text('Pay'),
                 ),
               ),
             ],

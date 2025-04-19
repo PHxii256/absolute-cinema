@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/features/payment/view/pages/payement_page.dart';
+import 'package:flutter_application/features/payment/view/widgets/credit_card_form.dart';
 import 'package:flutter_application/features/reservation/view/widgets/countdown_timer.dart';
 import 'package:flutter_application/features/reservation/view/widgets/price_calculator.dart';
 import 'package:flutter_application/features/reservation/view/widgets/theater_legend.dart';
@@ -60,9 +60,24 @@ class BookingPage extends ConsumerWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: FilledButton.tonal(
                   onPressed: () {
-                    Navigator.of(
-                      context,
-                    ).push(MaterialPageRoute(builder: (context) => PayementPage(screeningId: airingInfo.screeningId)));
+                    showModalBottomSheet(
+                      showDragHandle: true,
+                      barrierColor: const Color.fromARGB(144, 0, 0, 0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(topLeft: Radius.circular(6), topRight: Radius.circular(6)),
+                      ),
+                      context: context,
+                      builder: (context) {
+                        return SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.44,
+                          width: double.infinity,
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: SingleChildScrollView(child: CreditCardForm(screeningId: airingInfo.screeningId)),
+                          ),
+                        );
+                      },
+                    );
                   },
                   child: Padding(padding: const EdgeInsets.symmetric(horizontal: 80), child: Text("Checkout")),
                 ),
