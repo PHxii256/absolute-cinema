@@ -53,6 +53,8 @@ dependencies:
   flutter_expandable_fab: ^2.4.1
   animated_checkmark: ^3.1.0
   flutter_animate: ^4.5.2
+  firebase_core: ^3.13.0
+  firebase_messaging: ^15.2.5
 
 dev_dependencies:
   flutter_test:

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application/features/home/models/filters/movie/category_filter.dart';
 import 'package:flutter_application/features/home/viewmodel/movies_notifier.dart';
