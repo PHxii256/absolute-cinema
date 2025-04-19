@@ -1,5 +1,7 @@
 import 'package:flutter_application/features/home/models/filters/abstract_filter.dart';
 import 'package:flutter_application/features/home/models/filters/theater/allow_snacks_filter.dart';
+import 'package:flutter_application/features/home/models/filters/theater/area_filter.dart';
+import 'package:flutter_application/features/home/models/filters/theater/governorate_filter.dart';
 import 'package:flutter_application/features/home/viewmodel/theater_filter_notifer.dart';
 import 'package:flutter_application/features/search/model/movie_airing_info.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -16,7 +18,7 @@ class TheaterSearch extends _$TheaterSearch {
     if (_initialData.isEmpty) {
       _initialData = await _getSearchResults(movieId);
     }
-    return getFilteredMovies(_initialData, filterData);
+    return _getFilteredMovies(_initialData, filterData);
   }
 
   Future<void> searchTheater({required int movieId}) async {
@@ -55,7 +57,25 @@ class TheaterSearch extends _$TheaterSearch {
     }
   }
 
-  List<MovieAiringInfo> getFilteredMovies(
+  Set<String> getGovernorates() {
+    Set<String> governorateSet = {};
+    for (var airingInfo in _initialData) {
+      governorateSet.add(airingInfo.governorateName);
+    }
+    return governorateSet;
+  }
+
+  Set<String> getAreas() {
+    Set<String> areaSet = {};
+    for (var airingInfo in _initialData) {
+      areaSet.add(airingInfo.areaName);
+    }
+    return areaSet;
+  }
+
+  bool resultsEmpty() => _initialData.isEmpty;
+
+  List<MovieAiringInfo> _getFilteredMovies(
     List<MovieAiringInfo> initialData,
     Map<AbstractFilter, Set<String>> currentFilters,
   ) {
@@ -74,6 +94,12 @@ class TheaterSearch extends _$TheaterSearch {
       if (entry.value.isEmpty) break;
       if (entry.key is AllowSnacksFilter) {
         if (airingInfo.allowsSnacks != AllowSnacksFilter.allowSnacks(entry.value)) return false;
+      }
+      if (entry.key is GovernorateFilter) {
+        if (!entry.value.contains(airingInfo.governorateName)) return false;
+      }
+      if (entry.key is AreaFilter) {
+        if (!entry.value.contains(airingInfo.areaName)) return false;
       }
     }
     return true;
