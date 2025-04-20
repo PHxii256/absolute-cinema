@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_application/features/authentication/view/pages/sign_up_page.dart';
 import 'package:flutter_application/features/authentication/services/auth_service.dart';
@@ -67,6 +68,36 @@ class _LoginPageState extends State<LoginPage> {
                   Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SignUpPage()));
                 },
                 child: Text("Don't Have An Account? Sign Up"),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  children: [
+                    Expanded(child: Divider()),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      child: Text(
+                        "or use social sign-in",
+                        style: TextStyle(
+                          fontStyle: FontStyle.italic,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ),
+                    Expanded(child: Divider()),
+                  ],
+                ),
+              ),
+              SizedBox(height: 4),
+              InkWell(
+                onTap: () async {
+                  try {
+                    await AuthService().googleSignIn();
+                  } catch (e) {
+                    log(e.toString());
+                  }
+                },
+                child: Ink(child: SizedBox(height: 40, child: Image.asset('assets/google_rectangle.png'))),
               ),
             ],
           ),
