@@ -16,7 +16,7 @@ class MovieDetailsPage extends ConsumerWidget {
 
     return Scaffold(
       floatingActionButtonLocation: ExpandableFab.location,
-      floatingActionButton: DetailsPageFab(movieId: data.id),
+      floatingActionButton: DetailsPageFab(movieId: data.id, movieName: data.name, movieReleaseDate: data.releaseDate),
       appBar: AppBar(title: Text(data.name)),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

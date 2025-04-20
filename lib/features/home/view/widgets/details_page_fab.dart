@@ -6,12 +6,15 @@ import 'package:flutter_application/features/home/view/widgets/filters/filter_vi
 import 'package:flutter_application/features/home/view/widgets/filters/theater_filter_picker.dart';
 import 'package:flutter_application/features/home/view/widgets/theater_sort_options.dart';
 import 'package:flutter_application/features/search/viewmodel/theater_search_notifier.dart';
+import 'package:flutter_application/services/notificaton_service.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class DetailsPageFab extends ConsumerStatefulWidget {
   final int movieId;
-  const DetailsPageFab({super.key, required this.movieId});
+  final String movieName;
+  final DateTime movieReleaseDate;
+  const DetailsPageFab({super.key, required this.movieId, required this.movieName, required this.movieReleaseDate});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _DetailsPageFabState();
@@ -20,11 +23,20 @@ class DetailsPageFab extends ConsumerStatefulWidget {
 class _DetailsPageFabState extends ConsumerState<DetailsPageFab> {
   final _key = GlobalKey<ExpandableFabState>();
   double blur = 5;
+  bool reminderSet = false;
 
   @override
   void initState() {
     blur = 0;
+    checkReminderSet();
     super.initState();
+  }
+
+  void checkReminderSet() async {
+    final isSet = await NotificationService().checkNotficationReminderSet(widget.movieId);
+    setState(() {
+      reminderSet = isSet;
+    });
   }
 
   double getBlur() {
@@ -81,6 +93,46 @@ class _DetailsPageFabState extends ConsumerState<DetailsPageFab> {
         );
       },
     );
+  }
+
+  bool isReleased() => widget.movieReleaseDate.isBefore(DateTime.now());
+
+  void reminderButtonPressed() {
+    onPressHandler();
+    if (isReleased()) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("Reminder not set, This Movie is already released")));
+      }
+      return;
+    }
+
+    if (reminderSet == true) {
+      NotificationService().cancelNotification(widget.movieId);
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("Succesfully Cleared Reminder For ${widget.movieName}'s Release")));
+      }
+    } else {
+      NotificationService().scheduleNotification(
+        id: widget.movieId,
+        title: "Psss... Hey ${widget.movieName} just got released",
+        body: "Open the app to book your seat :D",
+        minutesTillNotif: widget.movieReleaseDate.difference(DateTime.now()).inMinutes,
+      );
+
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("Succesfully Set Reminder For ${widget.movieName}'s Release")));
+      }
+    }
+
+    setState(() {
+      reminderSet = !reminderSet;
+    });
   }
 
   Set<String> getGovernorates() {
@@ -166,7 +218,11 @@ class _DetailsPageFabState extends ConsumerState<DetailsPageFab> {
               ),
             ),
             SizedBox(width: 10),
-            FloatingActionButton.small(heroTag: null, onPressed: onPressHandler, child: Icon(Icons.notification_add)),
+            FloatingActionButton.small(
+              heroTag: null,
+              onPressed: reminderButtonPressed,
+              child: !reminderSet ? Icon(Icons.notification_add) : Icon(Icons.notifications_off_rounded),
+            ),
           ],
         ),
       ],

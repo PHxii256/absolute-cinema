@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/features/authentication/services/auth_gate.dart';
+import 'package:flutter_application/services/notificaton_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -7,6 +8,8 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  NotificationService().initNotification();
 
   await Supabase.initialize(
     url: "https://bvquxsswjrznbrlcxrkk.supabase.co",
