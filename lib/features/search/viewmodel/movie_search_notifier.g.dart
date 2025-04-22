@@ -6,7 +6,7 @@ part of 'movie_search_notifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$movieSearchHash() => r'74c18d1ffb225780deea8eea022031ee9227bd16';
+String _$movieSearchHash() => r'06032a6df9d988e26da3adfcea6ce68a45b3e2be';
 
 /// See also [MovieSearch].
 @ProviderFor(MovieSearch)

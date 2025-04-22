@@ -6,7 +6,7 @@ part of 'theater_search_notifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$theaterSearchHash() => r'd8964fa692c70e2013d521466b449ff62cd06190';
+String _$theaterSearchHash() => r'cbc55ac8b2fd0417c7746db6cf8957806de6184b';
 
 /// Copied from Dart SDK
 class _SystemHash {

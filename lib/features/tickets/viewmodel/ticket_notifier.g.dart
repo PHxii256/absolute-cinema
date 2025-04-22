@@ -6,7 +6,7 @@ part of 'ticket_notifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$ticketNotifierHash() => r'c45d6208f0a198c390325ea58b66c8f40ee74990';
+String _$ticketNotifierHash() => r'c0cf7dc7a56a108db4ed787e7a7c7bd87630943b';
 
 /// See also [TicketNotifier].
 @ProviderFor(TicketNotifier)

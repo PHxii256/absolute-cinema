@@ -62,105 +62,118 @@ class SettingsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final authService = AuthService();
 
-    return Padding(
-      padding: EdgeInsets.all(8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          TextButton.icon(
-            onPressed: () {
-              authService.signOut();
-            },
-            label: Text('Logout', style: TextStyle(fontSize: 18)),
-            icon: Icon(Icons.logout, size: 18),
-            iconAlignment: IconAlignment.end,
-          ),
-          TextButton.icon(
-            onPressed: () async {
-              SharedPreferences preferences = await SharedPreferences.getInstance();
-              await preferences.clear();
-              if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(behavior: SnackBarBehavior.floating, content: Text("Success! Deleted All Personal Data")),
-                );
-              }
-            },
-            label: Text('Delete Personal Data', style: TextStyle(fontSize: 18)),
-            icon: Icon(Icons.delete_outlined, size: 18),
-            iconAlignment: IconAlignment.end,
-          ),
-          TextButton.icon(
-            onPressed: () async {
-              final String? err = await updateBalance(50);
-              final int? balance = await tryGetBalance();
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.navigate_before),
+        ),
 
-              if (context.mounted) {
-                if (err == null && balance != null) {
+        title: Text("Settings", style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic)),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextButton.icon(
+              onPressed: () {
+                authService.signOut();
+              },
+              label: Text('Logout', style: TextStyle(fontSize: 18)),
+              icon: Icon(Icons.logout, size: 18),
+              iconAlignment: IconAlignment.end,
+            ),
+            TextButton.icon(
+              onPressed: () async {
+                SharedPreferences preferences = await SharedPreferences.getInstance();
+                await preferences.clear();
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(behavior: SnackBarBehavior.floating, content: Text("Success! Deleted All Personal Data")),
+                  );
+                }
+              },
+              label: Text('Delete Personal Data', style: TextStyle(fontSize: 18)),
+              icon: Icon(Icons.delete_outlined, size: 18),
+              iconAlignment: IconAlignment.end,
+            ),
+            TextButton.icon(
+              onPressed: () async {
+                final String? err = await updateBalance(50);
+                final int? balance = await tryGetBalance();
+
+                if (context.mounted) {
+                  if (err == null && balance != null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        duration: Duration(milliseconds: 400),
+                        behavior: SnackBarBehavior.floating,
+                        content: Text("Success! Current Balance is ${balance.toString()}EGP"),
+                      ),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(behavior: SnackBarBehavior.floating, content: Text("Error: $err")));
+                  }
+                }
+              },
+              label: Text('Add 50 EGP To Balance', style: TextStyle(fontSize: 18)),
+              icon: Icon(Icons.attach_money, size: 18),
+              iconAlignment: IconAlignment.end,
+            ),
+            TextButton.icon(
+              onPressed: () async {
+                final String? err = await updateBalance(-50);
+                final int? balance = await tryGetBalance();
+
+                if (context.mounted) {
+                  if (err == null && balance != null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        duration: Duration(milliseconds: 400),
+                        behavior: SnackBarBehavior.floating,
+                        content: Text("Success! Current Balance is ${balance.toString()}EGP"),
+                      ),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(behavior: SnackBarBehavior.floating, content: Text("Error: $err")));
+                  }
+                }
+              },
+              label: Text('Remove 50 EGP From Balance', style: TextStyle(fontSize: 18)),
+              icon: Icon(Icons.money_off, size: 18),
+              iconAlignment: IconAlignment.end,
+            ),
+            TextButton.icon(
+              onPressed: () async {
+                final int? balance = await tryGetBalance();
+
+                if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      duration: Duration(milliseconds: 400),
                       behavior: SnackBarBehavior.floating,
-                      content: Text("Success! Current Balance is ${balance.toString()}EGP"),
+                      duration: Duration(milliseconds: 400),
+                      content:
+                          balance != null
+                              ? Text("Success! Current Balance is ${balance.toString()}EGP")
+                              : Text("Error getting the balance :/"),
                     ),
                   );
-                } else {
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(SnackBar(behavior: SnackBarBehavior.floating, content: Text("Error: $err")));
                 }
-              }
-            },
-            label: Text('Add 50 EGP To Balance', style: TextStyle(fontSize: 18)),
-            icon: Icon(Icons.attach_money, size: 18),
-            iconAlignment: IconAlignment.end,
-          ),
-          TextButton.icon(
-            onPressed: () async {
-              final String? err = await updateBalance(-50);
-              final int? balance = await tryGetBalance();
-
-              if (context.mounted) {
-                if (err == null && balance != null) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      duration: Duration(milliseconds: 400),
-                      behavior: SnackBarBehavior.floating,
-                      content: Text("Success! Current Balance is ${balance.toString()}EGP"),
-                    ),
-                  );
-                } else {
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(SnackBar(behavior: SnackBarBehavior.floating, content: Text("Error: $err")));
-                }
-              }
-            },
-            label: Text('Remove 50 EGP From Balance', style: TextStyle(fontSize: 18)),
-            icon: Icon(Icons.money_off, size: 18),
-            iconAlignment: IconAlignment.end,
-          ),
-          TextButton.icon(
-            onPressed: () async {
-              final int? balance = await tryGetBalance();
-
-              if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    behavior: SnackBarBehavior.floating,
-                    duration: Duration(milliseconds: 400),
-                    content:
-                        balance != null
-                            ? Text("Success! Current Balance is ${balance.toString()}EGP")
-                            : Text("Error getting the balance :/"),
-                  ),
-                );
-              }
-            },
-            label: Text('Show Balance', style: TextStyle(fontSize: 18)),
-            icon: Icon(Icons.visibility_outlined, size: 18),
-            iconAlignment: IconAlignment.end,
-          ),
-        ],
+              },
+              label: Text('Show Balance', style: TextStyle(fontSize: 18)),
+              icon: Icon(Icons.visibility_outlined, size: 18),
+              iconAlignment: IconAlignment.end,
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -6,7 +6,7 @@ part of 'seat_status_notifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$seatStatusHash() => r'51051348d63fd761e56854406a4589248a26b63f';
+String _$seatStatusHash() => r'e6ef84b3bde06b2531d29d395b4285cb4676dbbd';
 
 /// Copied from Dart SDK
 class _SystemHash {

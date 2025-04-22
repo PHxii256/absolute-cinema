@@ -28,64 +28,72 @@ class _SearchPage extends ConsumerState<SearchWidget> {
       padding: const EdgeInsets.fromLTRB(14, 14, 14, 0),
       child: Column(
         children: [
-          SearchBar(
-            onSubmitted: (value) {
-              ref.read(queryProvider.notifier).update((prev) => value);
-              ref.read(movieSearchProvider.notifier).searchQuery(value);
-            },
-            elevation: WidgetStatePropertyAll(0),
-            controller: myController,
-            hintText: "Enter a movie or an actor's name",
-            hintStyle: WidgetStateProperty.all<TextStyle>(const TextStyle(color: Colors.black45)),
+          DecoratedBox(
+            decoration: BoxDecoration(
+              boxShadow: [BoxShadow(blurRadius: 20, spreadRadius: 1, offset: Offset(0, 10), color: Colors.black12)],
+            ),
+            child: SearchBar(
+              onSubmitted: (value) {
+                ref.read(queryProvider.notifier).update((prev) => value);
+                ref.read(movieSearchProvider.notifier).searchQuery(value);
+              },
+              backgroundColor: WidgetStatePropertyAll(Theme.of(context).colorScheme.onPrimary),
+              elevation: WidgetStatePropertyAll(0),
+              controller: myController,
+              hintText: " Enter a movie or an actor's name",
+              hintStyle: WidgetStateProperty.all<TextStyle>(
+                const TextStyle(color: Colors.black38, fontWeight: FontWeight.w500, fontStyle: FontStyle.italic),
+              ),
 
-            trailing: <Widget>[
-              Container(
-                width: 40,
-                padding: EdgeInsets.all(4),
-                child:
-                    queriedText.isEmpty
-                        ? IconButton(
-                          onPressed: () {
-                            ref.read(queryProvider.notifier).update((prev) => myController.text);
-                            ref.read(movieSearchProvider.notifier).searchQuery(myController.text);
-                          },
-                          icon: const Icon(Icons.search),
-                        )
-                        : IconButton(
-                          onPressed: () {
-                            FocusScope.of(context).unfocus();
-                            myController.clear();
-                            myController.clearComposing();
-                            ref.read(queryProvider.notifier).update((prev) => "");
-                          },
-                          icon: const Icon(Icons.clear),
-                        ),
-              ),
-              Container(
-                width: 50,
-                padding: EdgeInsets.all(4),
-                child: IconButton(
-                  onPressed: () {
-                    showModalBottomSheet(
-                      showDragHandle: true,
-                      barrierColor: const Color.fromARGB(190, 0, 0, 0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(topLeft: Radius.circular(6), topRight: Radius.circular(6)),
-                      ),
-                      context: context,
-                      builder: (context) {
-                        return SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.25,
-                          width: double.infinity,
-                          child: MovieSortOptions(),
-                        );
-                      },
-                    );
-                  },
-                  icon: const Icon(Icons.sort),
+              trailing: <Widget>[
+                Container(
+                  width: 40,
+                  padding: EdgeInsets.all(4),
+                  child:
+                      queriedText.isEmpty
+                          ? IconButton(
+                            onPressed: () {
+                              ref.read(queryProvider.notifier).update((prev) => myController.text);
+                              ref.read(movieSearchProvider.notifier).searchQuery(myController.text);
+                            },
+                            icon: const Icon(Icons.search),
+                          )
+                          : IconButton(
+                            onPressed: () {
+                              FocusScope.of(context).unfocus();
+                              myController.clear();
+                              myController.clearComposing();
+                              ref.read(queryProvider.notifier).update((prev) => "");
+                            },
+                            icon: const Icon(Icons.clear),
+                          ),
                 ),
-              ),
-            ],
+                Container(
+                  width: 50,
+                  padding: EdgeInsets.all(4),
+                  child: IconButton(
+                    onPressed: () {
+                      showModalBottomSheet(
+                        showDragHandle: true,
+                        barrierColor: const Color.fromARGB(190, 0, 0, 0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(topLeft: Radius.circular(6), topRight: Radius.circular(6)),
+                        ),
+                        context: context,
+                        builder: (context) {
+                          return SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.25,
+                            width: double.infinity,
+                            child: MovieSortOptions(),
+                          );
+                        },
+                      );
+                    },
+                    icon: const Icon(Icons.sort),
+                  ),
+                ),
+              ],
+            ),
           ),
           SingleChildScrollView(child: Padding(padding: const EdgeInsets.only(top: 8), child: MovieResults())),
           queriedText.isNotEmpty ? SizedBox(height: 6) : Container(),
