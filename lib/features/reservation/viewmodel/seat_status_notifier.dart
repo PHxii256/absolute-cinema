@@ -2,6 +2,8 @@ import 'dart:developer' as dev;
 import 'dart:math';
 import 'package:flutter_application/features/reservation/model/seat_status_data.dart';
 import 'package:flutter_application/features/reservation/model/theater_model.dart';
+import 'package:flutter_application/features/vouchers/viewmodel/applied_voucher.dart';
+import 'package:flutter_application/features/vouchers/viewmodel/voucher_notifier.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';
@@ -96,7 +98,6 @@ class SeatStatus extends _$SeatStatus {
   Future<String?> _bookIfBalanceEnough(int? currentBalance, int screeningId) async {
     if (currentBalance != null) {
       final total = getTotalPrice();
-      if (total == null) return "error getting the cost please try again";
       if (currentBalance < total) {
         return "balance is not enough to book seats :/";
       }
@@ -121,8 +122,8 @@ class SeatStatus extends _$SeatStatus {
   Future<String?> _bookSeats(int currentBalance, int screeningId) async {
     try {
       final total = getTotalPrice();
-      if (total == null) return "error getting the cost please try again";
       await _deduceBalance(currentBalance, total);
+      await _consumeVoucher();
       await _addTicket(screeningId);
       await Supabase.instance.client
           .from('reserved_seat')
@@ -146,6 +147,21 @@ class SeatStatus extends _$SeatStatus {
       });
     } catch (e) {
       dev.log(e.toString());
+      return e.toString();
+    }
+    return null;
+  }
+
+  Future<String?> _consumeVoucher() async {
+    final voucher = ref.read(appliedVoucherProvider);
+    if (voucher == null) return null;
+    try {
+      await Supabase.instance.client
+          .from("user_voucher")
+          .update({"claimed": true})
+          .eq("user_id", Supabase.instance.client.auth.currentUser!.id)
+          .eq("voucher_id", voucher.id);
+    } catch (e) {
       return e.toString();
     }
     return null;
@@ -298,13 +314,17 @@ class SeatStatus extends _$SeatStatus {
     }).toList();
   }
 
-  int? getTotalPrice() {
+  int getSubtotalPrice() {
     final nbrs = getNonBookedReservedSeats();
     int runningTotal = 0;
     for (int i = 0; i < nbrs.length; i++) {
       if (!nbrs[i].booked) runningTotal += nbrs[i].price;
     }
     return runningTotal;
+  }
+
+  int getTotalPrice() {
+    return ref.read(voucherNotifierProvider.notifier).getPriceAfterDiscount(getSubtotalPrice());
   }
 
   String generateQrId() {

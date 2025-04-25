@@ -9,22 +9,43 @@ import 'package:flutter_application/features/reservation/viewmodel/seat_status_n
 import 'package:flutter_application/features/search/model/movie_airing_info.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class BookingPage extends ConsumerWidget {
+class BookingPage extends ConsumerStatefulWidget {
   final int movieId;
   final int theaterId;
   final MovieAiringInfo airingInfo;
   const BookingPage({super.key, required this.movieId, required this.theaterId, required this.airingInfo});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _BookingPageState();
+}
+
+class _BookingPageState extends ConsumerState<BookingPage> {
+  bool selectedSeatsNotEmpty = false;
+
+  @override
+  Widget build(BuildContext contex) {
+    ref.listen(seatStatusProvider(widget.airingInfo.screeningId), (previous, next) {
+      setState(() {
+        setState(() {
+          selectedSeatsNotEmpty =
+              ref
+                  .read(seatStatusProvider(widget.airingInfo.screeningId).notifier)
+                  .getNonBookedReservedSeats()
+                  .isNotEmpty;
+        });
+      });
+    });
+
     return PopScope(
       onPopInvokedWithResult: (didPop, result) {
         ref.read(countdownProvider.notifier).cancelTimer();
-        ref.read(seatStatusProvider(airingInfo.screeningId).notifier).deleteAllReservedSeats(airingInfo.screeningId);
+        ref
+            .read(seatStatusProvider(widget.airingInfo.screeningId).notifier)
+            .deleteAllReservedSeats(widget.airingInfo.screeningId);
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(airingInfo.theaterName, style: TextStyle(fontWeight: FontWeight.bold)),
+          title: Text(widget.airingInfo.theaterName, style: TextStyle(fontWeight: FontWeight.bold)),
           centerTitle: true,
           actions: [CountdownTimer()],
         ),
@@ -36,19 +57,19 @@ class BookingPage extends ConsumerWidget {
                 child: ListView(
                   shrinkWrap: true,
                   children: [
-                    TheaterSeatsViewer(airingInfo: airingInfo),
+                    TheaterSeatsViewer(airingInfo: widget.airingInfo),
                     SizedBox(height: 8),
                     Center(child: Legend()),
                     SizedBox(height: 8),
-                    PriceCalculator(airingInfo: airingInfo),
+                    PriceCalculator(airingInfo: widget.airingInfo),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Additional Info", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-                          Text("Theater Hall: ${airingInfo.hallName}"),
-                          Text("Screen Type: ${airingInfo.hallScreen}"),
+                          Text("Theater Hall: ${widget.airingInfo.hallName}"),
+                          Text("Screen Type: ${widget.airingInfo.hallScreen}"),
                         ],
                       ),
                     ),
@@ -59,26 +80,34 @@ class BookingPage extends ConsumerWidget {
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: FilledButton.tonal(
-                  onPressed: () {
-                    showModalBottomSheet(
-                      showDragHandle: true,
-                      barrierColor: const Color.fromARGB(144, 0, 0, 0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(topLeft: Radius.circular(6), topRight: Radius.circular(6)),
-                      ),
-                      context: context,
-                      builder: (context) {
-                        return SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.44,
-                          width: double.infinity,
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: SingleChildScrollView(child: CreditCardForm(screeningId: airingInfo.screeningId)),
-                          ),
-                        );
-                      },
-                    );
-                  },
+                  onPressed:
+                      selectedSeatsNotEmpty
+                          ? () {
+                            showModalBottomSheet(
+                              showDragHandle: true,
+                              barrierColor: const Color.fromARGB(144, 0, 0, 0),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(6),
+                                  topRight: Radius.circular(6),
+                                ),
+                              ),
+                              context: context,
+                              builder: (context) {
+                                return SizedBox(
+                                  height: MediaQuery.of(context).size.height * 0.44,
+                                  width: double.infinity,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: SingleChildScrollView(
+                                      child: CreditCardForm(screeningId: widget.airingInfo.screeningId),
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          }
+                          : null,
                   child: Padding(padding: const EdgeInsets.symmetric(horizontal: 80), child: Text("Checkout")),
                 ),
               ),

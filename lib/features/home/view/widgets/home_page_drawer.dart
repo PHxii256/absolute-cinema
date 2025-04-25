@@ -39,7 +39,19 @@ class HomePageDrawer extends StatelessWidget {
             minLeadingWidth: 0,
             leading: SizedBox(width: 16, child: Icon(Icons.favorite_outline)),
             title: const Text(
-              'Favourites',
+              'Rate Us',
+              style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 18),
+            ),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            dense: true,
+            minLeadingWidth: 0,
+            leading: SizedBox(width: 16, child: Icon(Icons.group_add_outlined)),
+            title: const Text(
+              'Invite Friends',
               style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 18),
             ),
             onTap: () {

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application/features/reservation/view/pages/booking_page.dart';
 import 'package:flutter_application/features/search/model/movie_airing_info.dart';
@@ -57,8 +59,7 @@ class _TheaterScreeningTimePickerState extends ConsumerState<TheaterScreeningTim
     if (chosenScreeningId != null && widget.airingInfo.isNotEmpty) {
       final theaterId = widget.airingInfo.first.theaterId;
       final movieId = widget.airingInfo.first.movieId;
-      final airingInfo = widget.airingInfo.first.copyWith(screeningId: chosenScreeningId);
-
+      final airingInfo = widget.airingInfo.firstWhere((info) => info.screeningId == chosenScreeningId ? true : false);
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => BookingPage(theaterId: theaterId, movieId: movieId, airingInfo: airingInfo),

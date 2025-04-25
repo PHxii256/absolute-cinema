@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/features/vouchers/viewmodel/voucher_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AddVoucherComponent extends ConsumerStatefulWidget {
@@ -13,14 +14,16 @@ class _VoucherPageState extends ConsumerState<AddVoucherComponent> {
 
   final TextEditingController _controller = TextEditingController();
 
-  bool isCodeValid() {
+  void applyPromoCode() async {
     final code = _controller.text;
-    if (code == "test") return true;
-    return false;
-  }
-
-  void applyPromoCode() {
-    //final code = _controller.text;
+    if (code.isNotEmpty) {
+      final errMsg = await ref.read(voucherNotifierProvider.notifier).addPromoCode(code);
+      if (errMsg != null && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(errMsg)));
+      } else if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Promo code succefully added! :D")));
+      }
+    }
   }
 
   @override
@@ -69,18 +72,7 @@ class _VoucherPageState extends ConsumerState<AddVoucherComponent> {
                       onPressed: () {
                         setState(() {
                           textFieldToggled = false;
-                          final codeValid = isCodeValid();
-                          if (codeValid) applyPromoCode();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content:
-                                  codeValid
-                                      ? Text("Promo code succefully added! Enjoy the discount :D")
-                                      : Text(
-                                        "Unfortunately the promo code you entered is either invalid or incorrect :/",
-                                      ),
-                            ),
-                          );
+                          applyPromoCode();
                         });
                       },
                       icon: Icon(Icons.check_outlined),

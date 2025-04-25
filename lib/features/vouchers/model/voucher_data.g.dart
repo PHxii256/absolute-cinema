@@ -15,12 +15,11 @@ _VoucherData _$VoucherDataFromJson(Map<String, dynamic> json) => _VoucherData(
   discountAmountType:
       _readDiscountAmountType(json, 'discountAmountType') as String,
   discountAmount: (_readDiscountAmount(json, 'discountAmount') as num).toInt(),
-  discountLimitType:
-      _readDiscountLimitType(json, 'discountLimitType') as String,
   discountLimitAmount:
       (_readDiscountLimitAmount(json, 'discountLimitAmount') as num).toInt(),
   theaterName: _readTheaterName(json, 'theaterName') as String?,
-  validityDuration: _readvalidityDuration(json, 'validityDuration') as String?,
+  validityDuration:
+      (_readvalidityDuration(json, 'validityDuration') as num?)?.toInt(),
   minSeats: (_readMinSeats(json, 'minSeats') as num).toInt(),
   vipOnly: _readVipOnly(json, 'vipOnly') as bool,
   specificWeekDay: _readSpecificWeekDay(json, 'specificWeekDay') as String,
@@ -39,7 +38,6 @@ Map<String, dynamic> _$VoucherDataToJson(_VoucherData instance) =>
       'perkLimitation': instance.perkLimitation,
       'discountAmountType': instance.discountAmountType,
       'discountAmount': instance.discountAmount,
-      'discountLimitType': instance.discountLimitType,
       'discountLimitAmount': instance.discountLimitAmount,
       'theaterName': instance.theaterName,
       'validityDuration': instance.validityDuration,

@@ -157,6 +157,7 @@ class _CreditCardFormState extends ConsumerState<CreditCardForm> {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(behavior: SnackBarBehavior.floating, content: Text("Error: $bookedErr")),
                           );
+                          Navigator.of(context).pop();
                         }
                       }
                     }
