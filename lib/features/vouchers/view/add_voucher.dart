@@ -57,7 +57,7 @@ class _VoucherPageState extends ConsumerState<AddVoucherComponent> {
                 !textFieldToggled
                     ? Text(
                       "Have a promo code? Enter here",
-                      style: TextStyle(fontWeight: FontWeight.w600, fontStyle: FontStyle.italic),
+                      style: TextStyle(fontWeight: FontWeight.w600, fontStyle: FontStyle.italic, fontSize: 15),
                     )
                     : TextField(
                       controller: _controller,

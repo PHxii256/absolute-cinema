@@ -8,7 +8,6 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   NotificationService().initNotification();
 
   await Supabase.initialize(

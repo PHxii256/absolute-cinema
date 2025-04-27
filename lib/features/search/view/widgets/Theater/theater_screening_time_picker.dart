@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application/features/reservation/view/pages/booking_page.dart';
 import 'package:flutter_application/features/search/model/movie_airing_info.dart';
