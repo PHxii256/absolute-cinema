@@ -1,16 +1,28 @@
-# flutter_application
+# 🍿 Absolute Cinema (Movie Ticket Reservation System)
 
-A new Flutter project.
+## ❓ About
+Absolute Cinema is a movie ticket reservation app that allows users to book seats, earn vouchers and loyalty points and enables theaters to effectively reach out to their customers for announcments and promotions.
 
-## Getting Started
+## 💪 Features
 
-This project is a starting point for a Flutter application.
+Some of the features Absolute Cinema provides are:
 
-A few resources to get you started if this is your first Flutter project:
+- ⚡ **Realtime Theater Seats Viewer**: Enables users to book seats with confidence knowing that if they select their seats, they wont be taken away by someone else during the time they enter their payment information
+- 🔍 **Movie and Theater Search, Filtering & Sorting**: Enables users to find exactly the movie they want and where they want to watch it
+- 🎟️ **Ticket QR & PIN Code Generation**: Enables theater staff to quickly verify movie tickets
+- 🏷️ **Vouchers & Promo Codes**: Enables theaters to reward loyal customers and encourages them to come back again more often
+- 🔔 **Notifications**: Enables theaters to reach out to their customers for announcements and promotions.
+- ⌛ **Movie Release Reminders**: Enables users to set movie release reminders for upcoming movies
+- 🔒 **Authentication**: Users can login using email and password or using their Google account for more convenient access
+- ✨ **Simple & Elegant UI**: Making users enjoy using and coming back to the app 
+- 📱 **Cross Platform**: Absolute Cinema is built with Flutter which enables shipping to multiple platforms from a single codebase 
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 🔽 Download
+You can download the most recent version of Absolute Cinema at [link]
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 📚 Screenshots
+
+## 🛠️ How it was built & tools used
+
+## ⚖️ License
+Absolute Cinema is licensed under CC BY-NC-ND 4.0 
