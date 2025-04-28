@@ -1,4 +1,4 @@
-# 🍿 Absolute Cinema (Movie Ticket Reservation System)
+# 🍿Absolute Cinema (Movie Ticket Reservation System)
 
 ## ❓ About
 Absolute Cinema is a movie ticket reservation app that allows users to book seats, earn vouchers and loyalty points, and enables theaters to effectively reach out to their customers for announcements and promotions.
