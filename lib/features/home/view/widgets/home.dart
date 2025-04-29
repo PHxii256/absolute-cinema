@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/features/home/models/filters/movie/category_filter.dart';
 import 'package:flutter_application/features/home/viewmodel/movies_notifier.dart';
-import 'package:flutter_application/features/home/viewmodel/movie_filter_utils.dart';
 import 'package:flutter_application/features/home/view/widgets/home_picker.dart';
 import 'package:flutter_application/features/search/view/widgets/Movie/search_widget.dart';
 import 'package:flutter_application/features/search/viewmodel/search_query_provider.dart';

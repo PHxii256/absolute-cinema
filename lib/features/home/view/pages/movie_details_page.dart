@@ -88,9 +88,23 @@ class MovieDetailsPage extends ConsumerWidget {
                 children: [
                   Expanded(child: Divider()),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    padding: const EdgeInsets.only(left: 6.0),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(maxWidth: 230),
+                      child: Text(
+                        maxLines: 1,
+                        overflow: TextOverflow.clip,
+                        "Theaters Airing ${data.name} ",
+                        style: TextStyle(fontStyle: FontStyle.italic),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 6),
                     child: Text(
-                      "Theaters Airing ${data.name} This Week",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      "This Week",
                       style: TextStyle(fontStyle: FontStyle.italic),
                     ),
                   ),
