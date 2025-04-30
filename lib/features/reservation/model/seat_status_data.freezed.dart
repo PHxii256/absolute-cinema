@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$SeatStatusData {
 
-@JsonKey(name: 'reserved_at') DateTime get reservedAt;@JsonKey(name: 'screening_id') int get screeningId;@JsonKey(name: 'user_id') String get userId;@JsonKey(name: 'isle_code') String get isleCode;@JsonKey(name: 'seat_no') int get seatNumber;@JsonKey(name: 'is_vip') bool get isVip; bool get booked; int get price;
+@JsonKey(name: 'reserved_at') DateTime get reservedAt;@JsonKey(name: 'screening_id') int get screeningId;@JsonKey(name: 'user_id') String? get userId;@JsonKey(name: 'isle_code') String get isleCode;@JsonKey(name: 'seat_no') int get seatNumber;@JsonKey(name: 'is_vip') bool get isVip; bool get booked; int get price;
 /// Create a copy of SeatStatusData
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -49,7 +49,7 @@ abstract mixin class $SeatStatusDataCopyWith<$Res>  {
   factory $SeatStatusDataCopyWith(SeatStatusData value, $Res Function(SeatStatusData) _then) = _$SeatStatusDataCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'reserved_at') DateTime reservedAt,@JsonKey(name: 'screening_id') int screeningId,@JsonKey(name: 'user_id') String userId,@JsonKey(name: 'isle_code') String isleCode,@JsonKey(name: 'seat_no') int seatNumber,@JsonKey(name: 'is_vip') bool isVip, bool booked, int price
+@JsonKey(name: 'reserved_at') DateTime reservedAt,@JsonKey(name: 'screening_id') int screeningId,@JsonKey(name: 'user_id') String? userId,@JsonKey(name: 'isle_code') String isleCode,@JsonKey(name: 'seat_no') int seatNumber,@JsonKey(name: 'is_vip') bool isVip, bool booked, int price
 });
 
 
@@ -66,12 +66,12 @@ class _$SeatStatusDataCopyWithImpl<$Res>
 
 /// Create a copy of SeatStatusData
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? reservedAt = null,Object? screeningId = null,Object? userId = null,Object? isleCode = null,Object? seatNumber = null,Object? isVip = null,Object? booked = null,Object? price = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? reservedAt = null,Object? screeningId = null,Object? userId = freezed,Object? isleCode = null,Object? seatNumber = null,Object? isVip = null,Object? booked = null,Object? price = null,}) {
   return _then(_self.copyWith(
 reservedAt: null == reservedAt ? _self.reservedAt : reservedAt // ignore: cast_nullable_to_non_nullable
 as DateTime,screeningId: null == screeningId ? _self.screeningId : screeningId // ignore: cast_nullable_to_non_nullable
-as int,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
-as String,isleCode: null == isleCode ? _self.isleCode : isleCode // ignore: cast_nullable_to_non_nullable
+as int,userId: freezed == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as String?,isleCode: null == isleCode ? _self.isleCode : isleCode // ignore: cast_nullable_to_non_nullable
 as String,seatNumber: null == seatNumber ? _self.seatNumber : seatNumber // ignore: cast_nullable_to_non_nullable
 as int,isVip: null == isVip ? _self.isVip : isVip // ignore: cast_nullable_to_non_nullable
 as bool,booked: null == booked ? _self.booked : booked // ignore: cast_nullable_to_non_nullable
@@ -92,7 +92,7 @@ class _SeatStatusData implements SeatStatusData {
 
 @override@JsonKey(name: 'reserved_at') final  DateTime reservedAt;
 @override@JsonKey(name: 'screening_id') final  int screeningId;
-@override@JsonKey(name: 'user_id') final  String userId;
+@override@JsonKey(name: 'user_id') final  String? userId;
 @override@JsonKey(name: 'isle_code') final  String isleCode;
 @override@JsonKey(name: 'seat_no') final  int seatNumber;
 @override@JsonKey(name: 'is_vip') final  bool isVip;
@@ -132,7 +132,7 @@ abstract mixin class _$SeatStatusDataCopyWith<$Res> implements $SeatStatusDataCo
   factory _$SeatStatusDataCopyWith(_SeatStatusData value, $Res Function(_SeatStatusData) _then) = __$SeatStatusDataCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'reserved_at') DateTime reservedAt,@JsonKey(name: 'screening_id') int screeningId,@JsonKey(name: 'user_id') String userId,@JsonKey(name: 'isle_code') String isleCode,@JsonKey(name: 'seat_no') int seatNumber,@JsonKey(name: 'is_vip') bool isVip, bool booked, int price
+@JsonKey(name: 'reserved_at') DateTime reservedAt,@JsonKey(name: 'screening_id') int screeningId,@JsonKey(name: 'user_id') String? userId,@JsonKey(name: 'isle_code') String isleCode,@JsonKey(name: 'seat_no') int seatNumber,@JsonKey(name: 'is_vip') bool isVip, bool booked, int price
 });
 
 
@@ -149,12 +149,12 @@ class __$SeatStatusDataCopyWithImpl<$Res>
 
 /// Create a copy of SeatStatusData
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? reservedAt = null,Object? screeningId = null,Object? userId = null,Object? isleCode = null,Object? seatNumber = null,Object? isVip = null,Object? booked = null,Object? price = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? reservedAt = null,Object? screeningId = null,Object? userId = freezed,Object? isleCode = null,Object? seatNumber = null,Object? isVip = null,Object? booked = null,Object? price = null,}) {
   return _then(_SeatStatusData(
 reservedAt: null == reservedAt ? _self.reservedAt : reservedAt // ignore: cast_nullable_to_non_nullable
 as DateTime,screeningId: null == screeningId ? _self.screeningId : screeningId // ignore: cast_nullable_to_non_nullable
-as int,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
-as String,isleCode: null == isleCode ? _self.isleCode : isleCode // ignore: cast_nullable_to_non_nullable
+as int,userId: freezed == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as String?,isleCode: null == isleCode ? _self.isleCode : isleCode // ignore: cast_nullable_to_non_nullable
 as String,seatNumber: null == seatNumber ? _self.seatNumber : seatNumber // ignore: cast_nullable_to_non_nullable
 as int,isVip: null == isVip ? _self.isVip : isVip // ignore: cast_nullable_to_non_nullable
 as bool,booked: null == booked ? _self.booked : booked // ignore: cast_nullable_to_non_nullable

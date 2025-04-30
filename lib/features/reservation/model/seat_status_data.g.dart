@@ -10,7 +10,7 @@ _SeatStatusData _$SeatStatusDataFromJson(Map<String, dynamic> json) =>
     _SeatStatusData(
       reservedAt: DateTime.parse(json['reserved_at'] as String),
       screeningId: (json['screening_id'] as num).toInt(),
-      userId: json['user_id'] as String,
+      userId: json['user_id'] as String?,
       isleCode: json['isle_code'] as String,
       seatNumber: (json['seat_no'] as num).toInt(),
       isVip: json['is_vip'] as bool,

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application/features/tickets/model/ticket_data.dart';
 import 'package:flutter_application/features/tickets/view/widgets/ticket_card.dart';
@@ -8,17 +10,17 @@ class MyTickets extends ConsumerWidget {
   const MyTickets({super.key});
 
   List<Widget> getCards(List<TicketData> ticketDataList) {
-    // only add card if contents are unique
     List<Widget> cards = [];
-    Map<String, List<TicketData>> theaterIdIndexes = {};
+    Map<int, List<TicketData>> screeningIdticketDataIndexes = {};
     for (var i = 0; i < ticketDataList.length; i++) {
-      theaterIdIndexes.update(
-        ticketDataList[i].qrId,
+      screeningIdticketDataIndexes.update(
+        ticketDataList[i].screeningId,
         (value) => [...value, ticketDataList[i]],
         ifAbsent: () => [ticketDataList[i]],
       );
     }
-    for (var entry in theaterIdIndexes.entries) {
+
+    for (var entry in screeningIdticketDataIndexes.entries) {
       cards.add(TicketCard(tickeData: entry.value));
     }
     return cards;

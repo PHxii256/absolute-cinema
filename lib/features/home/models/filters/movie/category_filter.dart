@@ -2,7 +2,20 @@ import 'package:flutter_application/features/home/models/filters/abstract_filter
 
 class CategoryFilter implements AbstractFilter {
   @override
-  final Set<String> defaultSet = {"Action", "Drama", "Comedy", "Romance", "Adventure", "Horror"};
+  final Set<String> defaultSet = {
+    "Action",
+    "Drama",
+    "Comedy",
+    "Romance",
+    "Adventure",
+    "Horror",
+    "Thriller",
+    "Sci-Fi",
+    "Animation",
+    "Documentary",
+    "Sport",
+    "Fantasy",
+  };
 
   @override
   Set<String> addFilter(AbstractFilter filter, String newString) {
