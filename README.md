@@ -40,7 +40,7 @@ Some of the features Absolute Cinema provides are:
 - Firebase FCM (Server Side Notifications)
 
 ## 🔽 Download
-You can download the most recent version of Absolute Cinema here [[APK Link](https://drive.google.com/file/d/1-4T8YWQLgPs2sO79a9Q5il868dIGxmhj/view?usp=sharing)]
+You can download the most recent version of Absolute Cinema here [[APK Link](https://drive.google.com/file/d/1wNZ30CRfETpEElo89cD_x4SWfomgMaZX/view?usp=sharing)]
 
 ## ⚖️ License
 Absolute Cinema is licensed under CC BY-NC-ND 4.0 
